@@ -1,67 +1,49 @@
-# 🌱 Website Bán Hàng Nông Sản
+# Danh sách Biểu đồ Thiết kế Hệ thống
 
-## ERD
+Dưới đây là tập hợp các liên kết đến các sơ đồ thiết kế hệ thống (Diagrams) được lưu trữ trong thư mục này. Bạn có thể click trực tiếp vào từng liên kết để xem chi tiết ảnh.
 
-![ERD](ERD.png)
+## 1. Tổng quan hệ thống (Use Case & ERD)
+* [Biểu đồ Use Case Tổng quát](use%20case%20.drawio.png)
+* [Sơ đồ Thực thể Liên kết (ERD)](ERD.png)
 
----
+## 2. Activity Diagrams (Biểu đồ hoạt động)
+* [Xem danh sách mã giảm giá](Activity_-AC-XEMDANHSACHMAGIAMGIA.drawio.png)
+* [Quản lý Admin](Activity_-AC_ADMIN.drawio.png)
+* [Quản lý hồ sơ](Activity_-ACT%20Quản%20lý%20hồ%20sơ%20.drawio.png)
+* [Khôi phục mật khẩu](Activity_-ACT%20khôi%20phuc%20mat%20khau.drawio.png)
+* [Quản lý khách hàng](Activity_-ACT%20quản%20lý%20khách%20hàng%20.drawio.png)
+* [Đăng ký tài khoản](Activity_-ACT-Đăng%20Ký.drawio.png)
+* [Đặt hàng sản phẩm](Activity_-ACT-đặt%20HÀNG%20SP.drawio.png)
+* [Thanh toán áp mã](Activity_-ACT_THANHTOAN%20ÁP%20MÃ.drawio.png)
+* [Xem nguồn gốc](Activity_-ACT_XEM%20NGUỒN%20GỐC.drawio.png)
+* [Xem sản phẩm](Activity_-ACT_XEMSP.drawio.png)
+* [Đánh giá sản phẩm](Activity_-ACT_ĐÁNH%20GIÁ%20SP.drawio.png)
+* [Đăng nhập](Activity_-ACT_ĐĂNG%20NHẬP.drawio.png)
+* [Hoàn tiền](Activity_-act%20hoan%20tien.drawio.png)
+* [Lịch sử mua hàng](Activity_-act%20lịch%20sử%20mua%20hàng.drawio.png)
+* [Quản lý giỏ hàng](Activity_-act%20quan%20ly%20gio%20hnag.drawio.png)
 
-## Use Case Diagram
-
-![Use Case](trường hợp sử dụng .drawio.png)
-
----
-
-## Activity Diagram
-
-### Đăng ký
-
-![Đăng ký](Hoạt động_-ACT-Đăng Ký.drawio.png)
-
-### Đăng nhập
-
-![Đăng nhập](Hoạt động_-ACT-ĐĂNG NHẬP.drawio.png)
-
-### Khôi phục mật khẩu
-
-![Khôi phục mật khẩu](Hoạt động_-ACT khôi phục phúc mật khẩu.drawio.png)
-
-### Xem sản phẩm
-
-![Xem sản phẩm](Activity_-ACT XEMSP.drawio.png)
-
-### Quản lý giỏ hàng
-
-![Quản lý giỏ hàng](Activity_-act quan ly gio hnag.drawio.png)
-
-### Đặt hàng
-
-![Đặt hàng](Hoạt động_-ACT-đặt hàng SP.drawio.png)
-
-### Thanh toán áp mã
-
-![Thanh toán](Hoạt động_-ACT_THANHTOAN ÁP MÃ.drawio.png)
-
-### Truy xuất nguồn gốc
-
-![Truy xuất nguồn gốc](Hoạt động_-ACT_XEM NGUỒN GỐC.drawio.png)
-
-### Lịch sử mua hàng
-
-![Lịch sử mua hàng](Hoạt động_-act lịch sử mua hàng.drawio.png)
-
-### Đánh giá sản phẩm
-
-![Đánh giá sản phẩm](Hoạt động_-ACT_ĐÁNH GIÁ SP.drawio.png)
-
-### Quản lý hồ sơ
-
-![Quản lý hồ sơ](Hoạt động_-ACT Quản lý hồ sơ .drawio.png)
-
-### Hoàn tiền
-
-![Hoàn tiền](Activity_-act hoan tien.drawio.png)
-
-### Admin
-
-![Admin](Activity_-AC_ADMIN.drawio.png)
+## 3. Sequence Diagrams (Biểu đồ tuần tự)
+* [Báo cáo thống kê](SQ-SQ_Báo%20Cáo%20Thống%20Kê.drawio.png)
+* [Đăng ký tài khoản](SQ-SQ_DangKyTaiKhoan.drawio.png)
+* [Hồ sơ cá nhân](SQ-SQ_HỒ%20SƠ%20CÁ%20NHÂN.drawio.png)
+* [Khôi phục mật khẩu](SQ-SQ_KHÔI%20PHỤC%20MẬT%20KHẨU.drawio.png)
+* [Kiểm duyệt đánh giá](SQ-SQ_KIỂM%20DUYỆT%20ĐÁNH%20GIÁ.drawio.png)
+* [Lịch sử mua hàng](SQ-SQ_LỊCH%20SỬ%20MuaHÀNG.drawio.png)
+* [Quản lý sản phẩm](SQ-SQ_QLYSPHAM.drawio.png)
+* [Quản lý kho](SQ-SQ_QUẢN%20LÝ%20KHO.drawio.png)
+* [Quản lý lô và nhật ký](SQ-SQ_QUẢN%20LÝ%20LÔ%20VÀ%20NHẬT%20KÝ.drawio.png)
+* [Quản lý khuyến mãi](SQ-SQ_Qly%20Khuyến%20Mãi.drawio.png)
+* [Quản lý giỏ hàng](SQ-SQ_Quản%20lý%20giỏ%20hàng.drawio.png)
+* [Quản lý khách hàng](SQ-SQ%20quản%20lý%20khách%20hàng%20.drawio.png)
+* [Trang chủ](SQ-SQ_TRANG%20CHỦ.drawio.png)
+* [Truy cứu và xem chi tiết](SQ-SQ_TRUY%20CỨU%20VÀ%20XEM%20CHI%20TIẾT.drawio.png)
+* [Truy xuất nguồn gốc](SQ-SQ_TRUY%20XUẤT%20NGUỒN%20GỐC.drawio.png)
+* [Thanh toán](SQ-SQ_Thanh%20toán%20.drawio.png)
+* [Xử lý đơn hàng](SQ-SQ_XỬ%20LÝ%20ĐƠN%20HÀNG.drawio.png)
+* [Xử lý hoàn tiền](SQ-SQ%20xử%20ký%20hoàn%20tiền.drawio.png)
+* [Yêu cầu trả hàng](SQ-SQ_YÊU%20CẦU%20TRẢ%20HÀNG.drawio.png)
+* [Đánh giá sản phẩm](SQ-SQ_ĐÁNH%20GIÁ%20SẢN%20PHẨM.drawio.png)
+* [Đăng nhập](SQ-SQ_ĐĂNG%20NHẬP.drawio.png)
+* [Đặt hàng](SQ-SQ_Đặt%20Hàng.drawio.png)
+* [Đổi mật khẩu](SQ-SQ_Đổi%20mật%20khẩu.drawio.png)
