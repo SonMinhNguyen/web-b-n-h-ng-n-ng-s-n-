@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thay đổi mật khẩu | Fresh Mart</title>
+    
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .sidebar-active {
+            background: linear-gradient(to right, #f0fdf4, #ffffff);
+            color: #16a34a;
+            border-left: 4px solid #16a34a;
+        }
+        .custom-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+        }
+                body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .product-card { background-color: #ffffff; transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .category-item-active {
+            color: #16a34a;
+            font-weight: 900;
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+        }
+        
+        #search-input::placeholder {
+    font-size: 13px; /* Bạn có thể chỉnh số này nhỏ xuống (ví dụ: 12px, 11px) */
+    opacity: 0.8;    /* Làm mờ đi một chút nếu muốn */
+}
+    </style>
+</head>
+<script>
+    // 1. Hàm ẩn/hiện mật khẩu
+    function togglePass(id, btn) {
+        const input = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    // 2. Kiểm tra độ mạnh mật khẩu (Real-time)
+    function validateStrength(pass) {
+        const meter = document.getElementById('meter');
+        const text = document.getElementById('strength-text');
+        meter.className = "strength-meter"; // reset
+        
+        if (!pass) {
+            text.innerText = "Độ mạnh: Chưa nhập";
+            text.className = "text-[10px] text-gray-400 mt-1 italic ml-2";
+            return;
+        }
+
+        let strength = 0;
+        if (pass.length >= 8) strength++;
+        if (/[A-Z]/.test(pass)) strength++;
+        if (/[0-9]/.test(pass)) strength++;
+
+        if (strength === 1) {
+            meter.classList.add('strength-low');
+            text.innerText = "Độ mạnh: Yếu";
+            text.className = "text-[10px] text-red-500 mt-1 italic ml-2 font-bold";
+        } else if (strength === 2) {
+            meter.classList.add('strength-medium');
+            text.innerText = "Độ mạnh: Trung bình";
+            text.className = "text-[10px] text-amber-500 mt-1 italic ml-2 font-bold";
+        } else if (strength === 3) {
+            meter.classList.add('strength-high');
+            text.innerText = "Độ mạnh: Rất mạnh";
+            text.className = "text-[10px] text-green-600 mt-1 italic ml-2 font-bold";
+        }
+    }
+
+    // 3. Hàm hiển thị Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').innerText = message;
+        toast.style.opacity = '1';
+        toast.style.transform = 'translate(-50%, -20px)';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translate(-50%, 40px)';
+        }, 3000);
+    }
+
+    // 4. Xử lý lưu (Validation tổng thể)
+    function handleSubmit() {
+        const oldP = document.getElementById('old-pass');
+        const newP = document.getElementById('new-pass');
+        const confirmP = document.getElementById('confirm-pass');
+        
+        const errOld = document.getElementById('error-old');
+        const errNew = document.getElementById('error-new');
+        const errConfirm = document.getElementById('error-confirm');
+
+        let isValid = true;
+
+        // Reset errors
+        [errOld, errNew, errConfirm].forEach(el => el.classList.add('hidden'));
+        [oldP, newP, confirmP].forEach(el => el.classList.remove('border-red-500'));
+
+        // Kiểm tra trống
+        if (!oldP.value) {
+            errOld.innerText = "Vui lòng nhập mật khẩu cũ";
+            errOld.classList.remove('hidden');
+            oldP.classList.add('border-red-500');
+            isValid = false;
+        }
+
+        // Kiểm tra mật khẩu mới
+        const passPattern = /^(?=.*[A-Z])(?=.*[0-9]).{8,20}$/;
+        if (!passPattern.test(newP.value)) {
+            errNew.innerText = "Mật khẩu 8-20 ký tự, có 1 chữ hoa, 1 chữ số";
+            errNew.classList.remove('hidden');
+            newP.classList.add('border-red-500');
+            isValid = false;
+        }
+
+        // Kiểm tra khớp
+        if (newP.value !== confirmP.value) {
+            errConfirm.innerText = "Mật khẩu xác nhận không khớp";
+            errConfirm.classList.remove('hidden');
+            confirmP.classList.add('border-red-500');
+            isValid = false;
+        }
+
+        if (isValid) {
+            showToast("Đã cập nhật mật khẩu thành công!");
+            document.getElementById('change-password-form').reset();
+            validateStrength(''); // reset meter
+        }
+    }
+</script>
+<body class="bg-[#f8fafc] min-h-screen">
+
+   <!-- Header  -->
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]"
+                style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="trang_chu.html">Fresh Mart</a>
+            </h1>
+            
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" text-[16px] id="search-input" oninput="filterProducts()" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4" style="margin-left: -6cm;">
+            <a href="gio_hang.html" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+            </a>
+
+            <button class="bg-[#f6f7ef] px-6 py-2 rounded-3xl text-[14px] font-semibold text-[#456b3f] hover:bg-white transition">
+                <a href="../html_person/ho_so.html" class="inline-flex items-center">
+                    Ánh Tuyết
+                </a>
+            </button>
+
+            <div class="relative inline-block text-left" id="avatar-dropdown-wrapper">
+                <img src="https://i.pravatar.cc/120?img=32" alt="avatar" 
+                    onclick="toggleUserDropdown(event)" 
+                    class="w-[50px] h-[50px] rounded-full object-cover border-2 border-green-200 hover:border-green-500 cursor-pointer transition-all">
+                
+                <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[100]">
+                    <a href="../html_person/ho_so.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Hồ sơ cá nhân
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_person/trang_don_mua.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Đơn mua
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_login_register/dang_nhap.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                    <button onclick="handleUserLogout()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition">
+                        <i class="fas fa-sign-out-alt text-xs w-4"></i> Đăng xuất
+                    </button></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+        <nav class="bg-[#ffffff]  border-white">
+            <div class="max-w-[1920px] mx-auto px-16">
+                <ul class="flex items-center justify-between h-[35px]">
+                    <li><a href="../html_main/trang_chu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Trang chủ</a></li>
+                    <li><a href="../html_main/trang_gioi_thieu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Giới thiệu</a></li>
+                    <li><a href="../html_main/trang_san_pham.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Sản phẩm</a></li>
+                    <li><a href="../html_main/trang_cau_hoi.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Câu hỏi</a></li>
+                    <li><a href="../html_main/trang_tin_tuc.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Tin tức</a></li>
+                    <li><a href="../html_main/trang_lien_he.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Liên hệ</a></li>
+                </ul>
+            </div>
+        </nav>
+</header>
+
+    <div class="max-w-8xl mx-auto flex flex-col md:flex-row gap-8 py-10 px-4">
+        
+        <!-- Sidebar -->
+                <!-- Sidebar -->
+        <aside class="w-full md:w-1/4 space-y-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="relative">
+                    <img src="https://i.pravatar.cc/150?img=32" alt="Avatar" class="w-14 h-14 rounded-full border-2 border-green-500 p-0.5 object-cover">
+                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-800">Ánh Tuyết</h3>
+                    <button class="text-xs text-slate-400 hover:text-green-600 transition-colors flex items-center gap-1">
+                        <i class="fas fa-pen"></i> Sửa hồ sơ
+                    </button>
+                </div>
+            </div>
+
+            <nav class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden text-sm">
+                <div class="p-4">
+                    <div class="flex items-center gap-3 text-slate-700 font-semibold mb-2">
+                        <i class="far fa-user-circle text-lg text-green-600"></i>
+                        <span>Tài khoản của tôi</span>
+                    </div>
+                    <ul class="space-y-1">
+                        <li><a href="ho_so.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Hồ sơ</a></li>
+                        <li><a href="dia_chi.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Địa chỉ</a></li>
+                        <li><a href="doi_mat_khau.html" class="sidebar-active block pl-9 py-2 font-medium transition-all">Đổi mật khẩu</a></li>
+                        <li><a href="xoa_tai_khoan.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Xóa tài khoản</a></li>
+                        <li><a href="thong_tin.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Thông tin cá nhân</a></li>
+                    </ul>
+                </div>
+                <div class="border-t border-slate-50 p-4">
+                    <a href="trang_don_mua.html" class="flex items-center gap-3 text-slate-700 font-semibold hover:text-blue-600 transition-colors">
+                        <i class="fas fa-shopping-bag text-blue-500"></i>
+                        <span>Đơn mua</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+<style>
+    /* Thanh đo độ mạnh mật khẩu */
+    .strength-meter {
+        height: 4px;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+        background-color: #e2e8f0;
+        margin-top: 8px;
+    }
+    .strength-low { background-color: #ef4444; width: 33%; }
+    .strength-medium { background-color: #f59e0b; width: 66%; }
+    .strength-high { background-color: #10b981; width: 100%; }
+</style>
+
+<main class="w-full md:w-3/4 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="p-8 border-b border-slate-50 flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-bold text-slate-800 uppercase tracking-tight">Đổi mật khẩu</h1>
+            <p class="text-sm text-slate-400 mt-1">Quản lý bảo mật tài khoản cá nhân</p>
+        </div>
+        <i class="fas fa-shield-alt text-3xl text-green-100"></i>
+    </div>
+
+    <div class="p-8 max-w-7xl mx-auto">
+        <form id="change-password-form" class="space-y-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] items-start gap-2 md:gap-4">
+                <label class="text-sm font-bold text-slate-700 md:py-3 text-left">Mật khẩu hiện tại</label>
+                <div>
+                    <div class="relative">
+                        <input type="password" id="old-pass" placeholder="Nhập mật khẩu hiện tại" 
+                               class="custom-input w-full border border-slate-200 rounded-xl px-4 py-3 text-sm transition-all outline-none">
+                        <button type="button" onclick="togglePass('old-pass', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-green-600">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                    <p id="error-old" class="text-[10px] text-red-500 mt-1 hidden font-bold uppercase ml-2"></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] items-start gap-2 md:gap-4">
+                <label class="text-sm font-bold text-slate-700 md:py-3 text-left">Mật khẩu mới</label>
+                <div>
+                    <div class="relative">
+                        <input type="password" id="new-pass" oninput="validateStrength(this.value)" placeholder="Nhập mật khẩu mới" 
+                               class="custom-input w-full border border-slate-200 rounded-xl px-4 py-3 text-sm transition-all outline-none">
+                        <button type="button" onclick="togglePass('new-pass', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-green-600">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="meter" class="strength-meter"></div>
+                    <p id="strength-text" class="text-[10px] text-gray-400 mt-1 italic ml-2">Độ mạnh: Chưa nhập</p>
+                    <p id="error-new" class="text-[10px] text-red-500 mt-1 hidden font-bold uppercase ml-2"></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] items-start gap-2 md:gap-4">
+                <label class="text-sm font-bold text-slate-700 md:py-3 text-left">Xác nhận mật khẩu mới</label>
+                <div>
+                    <div class="relative">
+                        <input type="password" id="confirm-pass" placeholder="Nhập lại mật khẩu mới" 
+                               class="custom-input w-full border border-slate-200 rounded-xl px-4 py-3 text-sm transition-all outline-none">
+                        <button type="button" onclick="togglePass('confirm-pass', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-green-600">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                    <p id="error-confirm" class="text-[10px] text-red-500 mt-1 hidden font-bold uppercase ml-2"></p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row md:items-center justify-start md:pl-[216px] pt-4 gap-4">
+                <button type="button" onclick="handleSubmit()" 
+                        class="bg-green-600 hover:bg-green-700 active:scale-95 text-white px-12 py-3.5 rounded-xl shadow-lg shadow-green-100 transition-all font-bold text-sm uppercase tracking-widest">
+                    Lưu mật khẩu
+                </button>
+                <a href="#" class="text-sm text-green-600 font-bold hover:underline">Quên mật khẩu?</a>
+            </div>
+        </form>
+
+        <div class="mt-12 p-6 bg-slate-50 rounded-3xl border border-slate-100">
+            <h4 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                <i class="fas fa-shield-check text-green-600"></i> Quy chuẩn mật khẩu an toàn:
+            </h4>
+            <ul class="text-[11px] text-slate-500 space-y-2 font-medium">
+                <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500/30"></i> Tối thiểu 8 ký tự và tối đa 20 ký tự.</li>
+                <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500/30"></i> Phải bao gồm ít nhất một chữ cái viết hoa (A-Z).</li>
+                <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500/30"></i> Phải bao gồm ít nhất một chữ số (0-9).</li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 z-[200] pointer-events-none text-sm font-medium">
+    <span id="toast-message"></span>
+</div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+    <script src="../../assets/js/main.js"></script>
+    <script>
+    // Hàm toggler đóng mở khẩn cấp hỗ trợ trang chủ tĩnh
+    function toggleUserDropdown(e) {
+        if(e) e.stopPropagation();
+        const menu = document.getElementById('user-dropdown-menu');
+        if(menu) menu.classList.toggle('hidden');
+    }
+    
+    window.addEventListener('click', (e) => {
+        const menu = document.getElementById('user-dropdown-menu');
+        const wrap = document.getElementById('avatar-dropdown-wrapper');
+        if (menu && wrap && !wrap.contains(e.target)) menu.classList.add('hidden');
+    });
+</script>
+</body>
+</html>

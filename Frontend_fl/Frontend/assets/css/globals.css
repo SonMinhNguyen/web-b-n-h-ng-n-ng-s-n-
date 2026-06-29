@@ -1,0 +1,54 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+a {
+  text-decoration: none;
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Caladea-Bold", "weight": "700", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Caladea-Bold";
+  src: local("Caladea-Bold");
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Lobster-Regular", "weight": "400", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Lobster-Regular";
+  src: local("Lobster-Regular");
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Maven Pro-SemiBold", "weight": "600", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Maven Pro-SemiBold";
+  src: local("Maven Pro-SemiBold");
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Maven Pro-Bold", "weight": "700", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Maven Pro-Bold";
+  src: local("Maven Pro-Bold");
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Maven Pro-ExtraBold", "weight": "800", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Maven Pro-ExtraBold";
+  src: local("Maven Pro-ExtraBold");
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Maven Pro-Medium", "weight": "500", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Maven Pro-Medium";
+  src: local("Maven Pro-Medium");
+}

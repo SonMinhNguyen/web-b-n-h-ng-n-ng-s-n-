@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa hàng thực phẩm sạch | Fresh Mart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .product-card { background-color: #ffffff; transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .category-item-active {
+            color: #16a34a;
+            font-weight: 900;
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+        }
+        #search-input::placeholder {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]" style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="trang_chu.html">Fresh Mart</a>
+            </h1>
+            
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" id="search-input" oninput="filterProducts()" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4" style="margin-left: -6cm;">
+            <a href="gio_hang.html" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+            </a>
+
+            <button class="bg-[#f6f7ef] px-6 py-2 rounded-3xl text-[14px] font-semibold text-[#456b3f] hover:bg-white transition">
+                <a href="../html_person/ho_so.html" class="inline-flex items-center">
+                    Ánh Tuyết
+                </a>
+            </button>
+
+            <div class="relative inline-block text-left" id="avatar-dropdown-wrapper">
+                <img src="https://i.pravatar.cc/120?img=32" alt="avatar" 
+                    onclick="toggleUserDropdown(event)" 
+                    class="w-[50px] h-[50px] rounded-full object-cover border-2 border-green-200 hover:border-green-500 cursor-pointer transition-all">
+                
+                <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[100]">
+                    <a href="../html_person/ho_so.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Hồ sơ cá nhân
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_person/trang_don_mua.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Đơn mua
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_login_register/dang_nhap.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                    <button onclick="handleUserLogout()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition">
+                        <i class="fas fa-sign-out-alt text-xs w-4"></i> Đăng xuất
+                    </button></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <nav class="bg-[#ffffff] border-white">
+        <div class="max-w-[1920px] mx-auto px-16">
+            <ul class="flex items-center justify-between h-[35px]">
+                <li><a href="trang_chu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Trang chủ</a></li>
+                <li><a href="trang_gioi_thieu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Giới thiệu</a></li>
+                <li><a href="trang_san_pham.html" class="text-[14px] font-semibold text-green-700 hover:text-green-700 transition">Sản phẩm</a></li>
+                <li><a href="trang_cau_hoi.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Câu hỏi</a></li>
+                <li><a href="trang_tin_tuc.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Tin tức</a></li>
+                <li><a href="trang_lien_he.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Liên hệ</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
+        <aside class="w-full md:w-1/4 space-y-6 shrink-0">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 border-b pb-2 flex items-center gap-2">
+                    <i class="fas fa-th-large text-green-600"></i> Danh mục sản phẩm
+                </h3>
+                <nav class="flex flex-col gap-1 text-sm font-bold text-slate-600">
+                    <button onclick="changeCategory('all')" id="cat-all" class="category-item text-left py-2.5 px-4 rounded-xl transition-all category-item-active flex justify-between items-center w-full">
+                        <span>Tất cả</span>
+                    </button>
+                    <button onclick="changeCategory('Thịt cá')" id="cat-thit-ca" class="category-item text-left py-2.5 px-4 rounded-xl transition-all flex justify-between items-center w-full">
+                        <span>Thịt cá</span>
+                    </button>
+                    <button onclick="changeCategory('Rau củ')" id="cat-rau-cu" class="category-item text-left py-2.5 px-4 rounded-xl transition-all flex justify-between items-center w-full">
+                        <span>Rau củ</span>
+                    </button>
+                    <button onclick="changeCategory('Trái cây')" id="cat-trai-cay" class="category-item text-left py-2.5 px-4 rounded-xl transition-all flex justify-between items-center w-full">
+                        <span>Trái cây</span>
+                    </button>
+                    <button onclick="changeCategory('Hạt')" id="cat-hat" class="category-item text-left py-2.5 px-4 rounded-xl transition-all flex justify-between items-center w-full">
+                        <span>Các loại hạt</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4 sticky top-24">
+                <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 border-b pb-2 flex items-center gap-2">
+                    <i class="fas fa-tags text-green-600"></i> Lọc theo giá bán
+                </h3>
+                <div class="flex flex-col gap-2 text-sm font-semibold text-slate-600">
+                    <label class="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition">
+                        <input type="radio" name="price-filter" value="all" checked onclick="changePriceFilter('all')" class="w-4 h-4 accent-green-600">
+                        <span>Tất cả khoảng giá</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition">
+                        <input type="radio" name="price-filter" value="under-50" onclick="changePriceFilter(0, 50000)" class="w-4 h-4 accent-green-600">
+                        <span>Dưới 50.000đ</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition">
+                        <input type="radio" name="price-filter" value="50-150" onclick="changePriceFilter(50000, 150000)" class="w-4 h-4 accent-green-600">
+                        <span>50.000đ - 150.000đ</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition">
+                        <input type="radio" name="price-filter" value="over-150" onclick="changePriceFilter(150000, 9999999)" class="w-4 h-4 accent-green-600">
+                        <span>Trên 150.000đ</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <section class="flex-1 space-y-4">
+            <div class="bg-white py-3 px-5 rounded-xl border border-slate-100 flex justify-between items-center text-xs font-bold text-slate-400">
+                <span id="product-count">Đang tính toán số lượng...</span>
+                <span class="italic text-green-600 uppercase tracking-wider"><i class="fas fa-shield-alt"></i> Nông sản an toàn</span>
+            </div>
+
+            <div id="products-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 z-[100] pointer-events-none text-sm font-medium">
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="../../assets/js/main.js"></script>
+    <script>
+        if (typeof activeCategory === 'undefined') {
+            var activeCategory = 'all'; 
+        }
+    </script>
+</body>
+</html>

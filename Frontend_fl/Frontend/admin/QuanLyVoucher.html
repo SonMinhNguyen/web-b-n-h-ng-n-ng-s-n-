@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freshmart Admin - Quản lý voucher</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../assets/css/globals.css">
+<link rel="stylesheet" href="../assets/css/QuanLyVoucher.css">
+</head>
+<body>
+
+<header class="top-header">
+  <div class="brand">
+    <span class="brand-icon"><i class="fa-solid fa-shop"></i></span>
+    Freshmart Admin
+  </div>
+  <div class="header-title-block">
+    <h1>Quản lý voucher</h1>
+    <p>Quản lý, thêm mới và chỉnh sửa các voucher</p>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <nav class="nav-menu">
+      <a class="nav-item" href="../admin/QuanLyDonHang.html"><span class="nav-icon"><i class="fa-solid fa-cart-arrow-down"></i></span> Quản lý đơn hàng</a>
+      <a class="nav-item" href="../admin/QuanLySanPham.html"><span class="nav-icon"><i class="fa-solid fa-box"></i></span> Quản lý sản phẩm</a>
+      <a class="nav-item" href="../admin/QuanLyDanhGia.html"><span class="nav-icon"><i class="fa-solid fa-comments"></i></span> Quản lý đánh giá</a>
+      <a class="nav-item active" href="../admin/QuanLyVoucher.html"><span class="nav-icon"><i class="fa-solid fa-tags"></i></span> Quản lý voucher</a>
+      <a class="nav-item" href="../admin/QuanLyHoanTien.html"><span class="nav-icon"><i class="fa-solid fa-undo"></i></span> Quản lý hoàn tiền</a>
+      <a class="nav-item" href="../admin/BaoCao.html"><span class="nav-icon"><i class="fa-solid fa-chart-column"></i></span> Báo cáo</a>
+    </nav>
+    <div class="nav-divider"></div>
+    <div class="nav-bottom">
+      <a class="nav-item" href="#"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Về trang chủ</a>
+      <a class="nav-item" href="..html/html_login_register/dang_nhap.html"><span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span> Đăng xuất</a>
+      <div class="user-badge">
+        <div class="user-avatar"><i class="fa-solid fa-circle-user"></i></div>
+        Admin
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="vc-card">
+
+      <div class="vc-toolbar">
+        <div class="vc-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="vcSearch" placeholder="Tìm kiếm theo mã voucher">
+        </div>
+        <button class="btn-add-vc" onclick="toggleForm()">
+          <i class="fa-solid fa-plus"></i> Thêm voucher
+        </button>
+      </div>
+
+      <div class="vc-table-wrap">
+        <table class="vc-table">
+          <thead>
+            <tr>
+              <th>Mã voucher</th>
+              <th>Loại giảm giá</th>
+              <th>Giá trị</th>
+              <th>Ngày bắt đầu</th>
+              <th>Ngày kết thúc</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="vcTable"></tbody>
+        </table>
+
+        <!-- Empty state -->
+        <div class="vc-empty" id="vcEmpty">
+          <span id="vcEmptyText">Chưa có voucher nào.</span>
+        </div>
+      </div>
+
+      <!--  FORM THÊM VOUCHER (inline, hiện khi click nút) -->
+      <div class="vc-form-wrap" id="vcFormWrap" style="display:none;">
+        <div class="vc-form">
+
+          <div class="vc-form-row">
+            <label>Mã voucher :</label>
+            <div class="vc-field-wrap">
+              <input type="text" id="fCode" placeholder="VD: SUMMER20">
+              <!--  Tooltip mã không hợp lệ -->
+              <div class="vc-tooltip" id="tooltipCode">Mã không hợp lệ!</div>
+            </div>
+          </div>
+
+          <div class="vc-form-row">
+            <label>Loại giảm giá :</label>
+            <div class="vc-field-wrap">
+              <select id="fType">
+                <option value="">-- Chọn loại --</option>
+                <option value="percent">Phần trăm (%)</option>
+                <option value="fixed">Số tiền cố định (đ)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="vc-form-row">
+            <label>Giá trị :</label>
+            <div class="vc-field-wrap">
+              <input type="text" id="fValue" placeholder="VD: 20 hoặc 50000">
+            </div>
+          </div>
+
+          <div class="vc-form-row">
+            <label>Ngày bắt đầu :</label>
+            <div class="vc-field-wrap">
+              <input type="date" id="fStart">
+              <!-- [CASE 4] Tooltip ngày không hợp lệ -->
+              <div class="vc-tooltip" id="tooltipDate">Ngày nhập không hợp lệ !</div>
+            </div>
+          </div>
+
+          <div class="vc-form-row">
+            <label>Ngày kết thúc :</label>
+            <div class="vc-field-wrap">
+              <input type="date" id="fEnd">
+            </div>
+          </div>
+
+          <div class="vc-form-row">
+            <label>Điều khoản sử dụng :</label>
+            <div class="vc-field-wrap">
+              <input type="text" id="fTerms" placeholder="VD: Áp dụng đơn từ 100.000đ">
+            </div>
+          </div>
+
+          <div class="vc-form-actions">
+            <button class="btn-cancel-vc" onclick="toggleForm()">Hủy</button>
+            <button class="btn-submit-vc" onclick="submitVoucher()">
+              <i class="fa-solid fa-plus"></i> Thêm voucher
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+let vouchers = [
+  { code: 'SUMMER20', type: 'percent', value: '20%',      start: '01/05/2026', end: '31/05/2026', terms: 'Áp dụng đơn từ 100.000đ', status: 'active'   },
+  { code: 'FRESH50K', type: 'fixed',   value: '50.000đ',  start: '01/04/2026', end: '30/04/2026', terms: 'Không giới hạn',          status: 'expired'  },
+  { code: 'NEWUSER',  type: 'percent', value: '15%',      start: '01/01/2026', end: '31/12/2026', terms: 'Chỉ dành cho khách mới',  status: 'active'   },
+];
+
+let searchQuery = '';
+let formOpen    = false;
+
+// TOGGLE FORM
+function toggleForm() {
+  formOpen = !formOpen;
+  document.getElementById('vcFormWrap').style.display = formOpen ? 'block' : 'none';
+  if (formOpen) clearForm();
+}
+
+function clearForm() {
+  ['fCode','fType','fValue','fStart','fEnd','fTerms'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  hideTooltip('tooltipCode');
+  hideTooltip('tooltipDate');
+}
+
+// RENDER TABLE
+function getFiltered() {
+  const q = searchQuery.toLowerCase();
+  return vouchers.filter(v => v.code.toLowerCase().includes(q));
+}
+
+function renderTable() {
+  const tbody = document.getElementById('vcTable');
+  const empty = document.getElementById('vcEmpty');
+  const list  = getFiltered();
+
+  tbody.innerHTML = '';
+
+  if (list.length === 0) {
+    empty.style.display = 'flex';
+    // chưa có voucher / tìm không thấy
+    document.getElementById('vcEmptyText').textContent = searchQuery
+      ? 'Không tìm thấy voucher phù hợp'
+      : 'Chưa có voucher nào.';
+    return;
+  }
+
+  empty.style.display = 'none';
+
+  list.forEach((v) => {
+    const realIdx = vouchers.indexOf(v);
+    const isActive = v.status === 'active';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="vc-code">${v.code}</td>
+      <td>${v.type === 'percent' ? 'Phần trăm (%)' : 'Số tiền cố định'}</td>
+      <td>${v.value}</td>
+      <td>${v.start}</td>
+      <td>${v.end}</td>
+      <td>
+        <span class="vc-badge ${isActive ? 'active' : 'expired'}">
+          ${isActive ? 'Đang hoạt động' : 'Hết hạn'}
+        </span>
+      </td>
+      <td>
+        <div class="action-btns">
+          <button class="action-btn" title="Chỉnh sửa" onclick="editVoucher(${realIdx})">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button class="action-btn delete" title="Xóa" onclick="deleteVoucher(${realIdx})">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// SUBMIT FORM 
+function submitVoucher() {
+  const code  = document.getElementById('fCode').value.trim().toUpperCase();
+  const type  = document.getElementById('fType').value;
+  const value = document.getElementById('fValue').value.trim();
+  const start = document.getElementById('fStart').value;
+  const end   = document.getElementById('fEnd').value;
+  const terms = document.getElementById('fTerms').value.trim();
+
+  let valid = true;
+
+  // Validate mã voucher: ít nhất 3 ký tự chữ/số, không ký tự đặc biệt
+  const codeReg = /^[A-Z0-9]{3,20}$/;
+  if (!code || !codeReg.test(code)) {
+    showTooltip('tooltipCode');
+    valid = false;
+  } else {
+    hideTooltip('tooltipCode');
+  }
+
+  // Validate ngày: start phải trước end
+  const startDate = new Date(start);
+  const endDate   = new Date(end);
+  if (!start || !end || startDate >= endDate) {
+    showTooltip('tooltipDate');
+    valid = false;
+  } else {
+    hideTooltip('tooltipDate');
+  }
+
+  if (!valid) return;
+
+  const fmt = d => {
+    const dt = new Date(d);
+    return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()}`;
+  };
+
+  vouchers.push({
+    code,
+    type,
+    value: type === 'percent' ? `${value}%` : `${Number(value).toLocaleString('vi-VN')}đ`,
+    start: fmt(start),
+    end:   fmt(end),
+    terms,
+    status: new Date(end) >= new Date() ? 'active' : 'expired',
+  });
+
+  toggleForm();
+  renderTable();
+}
+
+// EDIT (điền lại form) 
+function editVoucher(idx) {
+  const v = vouchers[idx];
+  formOpen = true;
+  document.getElementById('vcFormWrap').style.display = 'block';
+  document.getElementById('fCode').value  = v.code;
+  document.getElementById('fType').value  = v.type;
+  document.getElementById('fTerms').value = v.terms;
+  window._editIdx = idx;
+}
+
+// DELETE 
+function deleteVoucher(idx) {
+  if (confirm(`Xóa voucher "${vouchers[idx].code}"?`)) {
+    vouchers.splice(idx, 1);
+    renderTable();
+  }
+}
+
+// TOOLTIPS 
+let tooltipTimers = {};
+function showTooltip(id) {
+  document.getElementById(id).classList.add('show');
+  clearTimeout(tooltipTimers[id]);
+  tooltipTimers[id] = setTimeout(() => hideTooltip(id), 3000);
+}
+function hideTooltip(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+// SEARCH 
+document.getElementById('vcSearch').addEventListener('input', function () {
+  searchQuery = this.value.trim();
+  renderTable();
+});
+
+renderTable();
+</script>
+</body>
+</html>

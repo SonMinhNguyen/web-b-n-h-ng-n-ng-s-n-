@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freshmart Admin - Quản lý hoàn tiền</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../assets/css/globals.css">
+<link rel="stylesheet" href="../assets/css/BaoCao.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Be Vietnam Pro', sans-serif; }
+  /* Đảm bảo tương thích mượt mà với globals.css và BaoCao.css sẵn có của bạn */
+  .layout { display: flex; min-height: calc(100vh - 70px); }
+  .sidebar { width: 260px; flex-shrink: 0; }
+  .main-content { flex-grow: 1; padding: 24px; background-color: #f8fafc; }
+</style>
+</head>
+<body class="bg-gray-50">
+
+<header class="top-header bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+  <div class="brand text-xl font-extrabold text-green-700 flex items-center gap-2">
+    <span class="brand-icon"><i class="fa-solid fa-shop"></i></span>
+    Freshmart Admin
+  </div>
+  <div class="header-title-block text-right">
+    <h1 class="text-xl font-bold text-slate-800">Quản lý hoàn tiền</h1>
+    <p class="text-xs text-slate-500">Kiểm duyệt và xử lý các yêu cầu trả hàng - hoàn tiền từ khách hàng</p>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar bg-white border-r border-slate-200 flex flex-col justify-between p-4 shadow-sm">
+    <div class="space-y-6">
+      <nav class="nav-menu flex flex-col gap-1">
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-50 transition" href="../admin/QuanLyDonHang.html">
+          <span class="nav-icon"><i class="fa-solid fa-cart-arrow-down"></i></span> Quản lý đơn hàng
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-50 transition" href="../admin/QuanLySanPham.html">
+          <span class="nav-icon"><i class="fa-solid fa-box"></i></span> Quản lý sản phẩm
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-50 transition" href="../admin/QuanLyDanhGia.html">
+          <span class="nav-icon"><i class="fa-solid fa-comments"></i></span> Quản lý đánh giá
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-50 transition" href="../admin/QuanLyVoucher.html">
+          <span class="nav-icon"><i class="fa-solid fa-tags"></i></span> Quản lý voucher
+        </a>
+        <a class="nav-item active flex items-center gap-3 px-4 py-3 text-sm font-bold text-green-700 bg-green-50 border-l-4 border-green-600 rounded-r-xl transition" href="../admin/QuanLyHoanTien.html">
+          <span class="nav-icon"><i class="fa-solid fa-undo"></i></span> Quản lý hoàn tiền
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-50 transition" href="../admin/BaoCao.html">
+          <span class="nav-icon"><i class="fa-solid fa-chart-column"></i></span> Báo cáo
+        </a>
+      </nav>
+    </div>
+    
+    <div class="space-y-4">
+      <div class="nav-divider border-t border-slate-100 my-2"></div>
+      <div class="nav-bottom flex flex-col gap-1">
+        <a class="nav-item flex items-center gap-3 px-4 py-2.5 text-xs font-semibold text-slate-500 rounded-lg hover:bg-slate-50" href="#"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Về trang chủ</a>
+        <a class="nav-item flex items-center gap-3 px-4 py-2.5 text-xs font-semibold text-red-500 rounded-lg hover:bg-red-50" href="../index/DangNhap.html"><span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span> Đăng xuất</a>
+        <div class="user-badge flex items-center gap-3 px-4 py-3 mt-2 bg-slate-50 rounded-xl border border-slate-100">
+          <div class="user-avatar text-slate-400 text-lg"><i class="fa-solid fa-circle-user"></i></div>
+          <span class="text-xs font-bold text-slate-700">Admin</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="max-w-6xl mx-auto space-y-6">
+      
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-1.5 flex gap-2">
+        <button id="tab-refund_pending" onclick="filterAdminRefund('refund_pending')" class="tab-btn flex-1 py-3 text-xs font-bold uppercase tracking-wider text-green-700 bg-green-50 rounded-xl border border-green-100 transition-all">
+          Yêu cầu chờ duyệt (<span id="count-pending">0</span>)
+        </button>
+        <button id="tab-refund" onclick="filterAdminRefund('refund')" class="tab-btn flex-1 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 rounded-xl transition-all">
+          Đã đồng ý hoàn tiền
+        </button>
+        <button id="tab-refund_rejected" onclick="filterAdminRefund('refund_rejected')" class="tab-btn flex-1 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 rounded-xl transition-all">
+          Yêu cầu bị từ chối
+        </button>
+      </div>
+
+      <div id="admin-refund-list" class="space-y-4">
+          </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 z-[300] pointer-events-none text-sm font-medium">
+  <span id="toast-message"></span>
+</div>
+
+<script>
+let orders = [];
+let currentFilterStatus = 'refund_pending';
+
+// Hàm nạp dữ liệu từ localStorage thực tế dùng chung với khách hàng
+function loadOrdersFromStorage() {
+    let localOrders = JSON.parse(localStorage.getItem('fresh_mart_orders'));
+    orders = localOrders ? [...localOrders] : [];
+}
+
+// Hàm lưu trữ dữ liệu tập trung xuống lại localStorage
+function saveOrdersToStorage() {
+    localStorage.setItem('fresh_mart_orders', JSON.stringify(orders));
+}
+
+// Cập nhật số lượng đếm hiển thị trên các Badge Tabs
+function updateCounters() {
+    const pendingCount = orders.filter(o => o.status === 'refund_pending').length;
+    document.getElementById('count-pending').innerText = pendingCount;
+}
+
+// Thay đổi giao diện CSS của Tab đang chọn
+function updateTabUI(activeStatus) {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('text-green-700', 'bg-green-50', 'border', 'border-green-100');
+        btn.classList.add('text-slate-400');
+    });
+    const activeBtn = document.getElementById(`tab-${activeStatus}`);
+    if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('text-green-700', 'bg-green-50', 'border', 'border-green-100');
+    }
+}
+
+// Hàm lọc và hiển thị danh sách đơn hoàn tiền
+function filterAdminRefund(status) {
+    currentFilterStatus = status;
+    updateTabUI(status);
+    
+    const container = document.getElementById('admin-refund-list');
+    if (!container) return;
+    
+    loadOrdersFromStorage();
+    updateCounters();
+
+    const targetOrders = orders.filter(o => o.status === status);
+    container.innerHTML = '';
+
+    if (targetOrders.length === 0) {
+        container.innerHTML = `
+            <div class="bg-white p-20 rounded-2xl text-center text-slate-400 font-bold italic border border-slate-200/60 shadow-sm">
+                Không tìm thấy yêu cầu hoàn tiền nào ở trạng thái này...
+            </div>`;
+        return;
+    }
+
+    targetOrders.forEach(order => {
+        // Tính toán số tiền thực trả sau khi chia đều voucher (nếu đơn có nhiều hàng)
+        const totalItemsInOrder = orders.filter(o => o.id === order.id).length;
+        const discountPerItem = order.discountApplied ? (parseInt(order.discountApplied) / totalItemsInOrder) : 0;
+        const finalPrice = (order.price * order.qty) - discountPerItem;
+
+        // Tạo khu vực nút bấm động tùy thuộc vào tab hiện tại
+        let controlButtons = '';
+        if (status === 'refund_pending') {
+            controlButtons = `
+                <div class="flex gap-2 justify-end pt-2">
+                    <button onclick="processRefundDecision('${order.id}', 'reject')" class="px-5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-all shadow-sm">
+                        <i class="fa-solid fa-xmark mr-1"></i> Từ chối hoàn tiền
+                    </button>
+                    <button onclick="processRefundDecision('${order.id}', 'approve')" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm">
+                        <i class="fa-solid fa-check mr-1"></i> Đồng ý hoàn tiền
+                    </button>
+                </div>
+            `;
+        } else if (status === 'refund') {
+            controlButtons = `<p class="text-right text-xs text-green-600 font-bold italic"><i class="fa-solid fa-circle-check"></i> Đã phê duyệt hoàn tiền</p>`;
+        } else {
+            controlButtons = `<p class="text-right text-xs text-rose-500 font-bold italic"><i class="fa-solid fa-circle-xmark"></i> Đã bác bỏ yêu cầu</p>`;
+        }
+
+        container.insertAdjacentHTML('beforeend', `
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                
+                <div class="space-y-3 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold tracking-wide">Mã Đơn: ${order.id}</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                        <img src="${order.image}" class="w-12 h-12 object-cover rounded-lg border bg-white">
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">${order.name}</p>
+                            <p class="text-slate-500 mt-0.5">Số lượng kiện: x${order.qty} | Đơn giá gốc: ${order.price.toLocaleString()}đ</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-700"><strong>Tổng số tiền yêu cầu hoàn:</strong> <span class="text-red-500 text-sm font-black">${(finalPrice < 0 ? 0 : finalPrice).toLocaleString()}đ</span></p>
+                    
+                    <div class="bg-slate-50/50 p-3 rounded-xl space-y-1 border border-dashed border-slate-200">
+                        <p class="text-slate-500 uppercase font-black text-[9px] tracking-wider">Thông tin người mua thực tế</p>
+                        <p class="text-slate-800"><strong>Họ tên:</strong> ${order.customer || "Ánh Tuyết"}</p>
+                        <p class="text-slate-800 leading-relaxed"><strong>Địa chỉ nhận:</strong> ${order.address || "Chưa cập nhật địa chỉ hệ thống"}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3 flex flex-col justify-between h-full">
+                    <div class="space-y-2">
+                        <p class="bg-amber-50 p-3 rounded-xl border border-amber-200/70 text-amber-900 leading-relaxed text-xs">
+                            <strong>Lý do hoàn tiền từ khách:</strong> <br><span class="italic text-slate-600 font-medium">${order.refundReason || "Không có nội dung mô tả chi tiết."}</span>
+                        </p>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase mb-1"><i class="fa-solid fa-camera"></i> Ảnh chụp minh họa lỗi:</p>
+                            <img src="${order.refundPhoto || 'https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?q=80&w=300'}" 
+                                 class="w-full h-24 object-cover rounded-xl border shadow-sm cursor-zoom-in hover:opacity-90 transition-opacity" 
+                                 onclick="window.open(this.src)">
+                        </div>
+                    </div>
+                    
+                    ${controlButtons}
+                </div>
+            </div>
+        `);
+    });
+}
+
+// Xử lý quyết định phê duyệt cuối cùng của Admin
+function processRefundDecision(orderId, action) {
+    const index = orders.findIndex(o => o.id === orderId);
+    if (index !== -1) {
+        if (action === 'approve') {
+            orders[index].status = 'refund'; // Chuyển hẳn sang trạng thái Đã hoàn tiền thành công
+            showToast(`Thành công: Đã chấp thuận hoàn tiền đơn hàng ${orderId}!`);
+        } else {
+            orders[index].status = 'refund_rejected'; // Đổi sang trạng thái bị từ chối
+            showToast(`Đã bác bỏ: Hủy bỏ yêu cầu xét duyệt đơn hàng ${orderId}.`);
+        }
+        saveOrdersToStorage();
+        filterAdminRefund(currentFilterStatus); // Render tải lại tab hiện tại
+    }
+}
+
+// Tiện ích bật thông báo Toast
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if(!toast) return;
+    document.getElementById('toast-message').innerText = msg;
+    toast.style.opacity = '1'; toast.style.transform = 'translate(-50%, -20px)';
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translate(-50%, 40px)'; }, 3000);
+}
+
+// Khởi tạo chạy nạp dữ liệu mặc định khi trang sẵn sàng
+document.addEventListener('DOMContentLoaded', () => {
+    loadOrdersFromStorage();
+    filterAdminRefund('refund_pending'); // Luôn hiển thị các đơn chờ duyệt đầu tiên
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin tài khoản | Fresh Mart</title>
+    
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .sidebar-active {
+            background: linear-gradient(to right, #f0fdf4, #ffffff);
+            color: #16a34a;
+            border-left: 4px solid #16a34a;
+        }
+        .custom-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        #search-input::placeholder { font-size: 13px; opacity: 0.8; }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f8fafc] min-h-screen">
+
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]"
+                style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="trang_chu.html">Fresh Mart</a>
+            </h1>
+            
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" text-[16px] id="search-input" oninput="filterProducts()" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4" style="margin-left: -6cm;">
+            <a href="gio_hang.html" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+            </a>
+
+            <button class="bg-[#f6f7ef] px-6 py-2 rounded-3xl text-[14px] font-semibold text-[#456b3f] hover:bg-white transition">
+                <a href="../html_person/ho_so.html" class="inline-flex items-center">
+                    Ánh Tuyết
+                </a>
+            </button>
+
+            <div class="relative inline-block text-left" id="avatar-dropdown-wrapper">
+                <img src="https://i.pravatar.cc/120?img=32" alt="avatar" 
+                    onclick="toggleUserDropdown(event)" 
+                    class="w-[50px] h-[50px] rounded-full object-cover border-2 border-green-200 hover:border-green-500 cursor-pointer transition-all">
+                
+                <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[100]">
+                    <a href="../html_person/ho_so.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Hồ sơ cá nhân
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_person/trang_don_mua.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Đơn mua
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_login_register/dang_nhap.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                    <button onclick="handleUserLogout()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition">
+                        <i class="fas fa-sign-out-alt text-xs w-4"></i> Đăng xuất
+                    </button></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <nav class="bg-[#ffffff] border-white">
+        <div class="max-w-[1920px] mx-auto px-16">
+            <ul class="flex items-center justify-between h-[35px]">
+                <li><a href="../html_main/trang_chu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Trang chủ</a></li>
+                <li><a href="../html_main/trang_gioi_thieu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Giới thiệu</a></li>
+                <li><a href="../html_main/trang_san_pham.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Sản phẩm</a></li>
+                <li><a href="../html_main/trang_cau_hoi.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Câu hỏi</a></li>
+                <li><a href="../html_main/trang_tin_tuc.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Tin tức</a></li>
+                <li><a href="../html_main/trang_lien_he.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Liên hệ</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-8 py-10">
+        
+        <aside class="w-full md:w-1/4 space-y-4 shrink-0">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="relative">
+                    <img src="https://i.pravatar.cc/150?img=32" alt="Avatar" class="w-14 h-14 rounded-full border-2 border-green-500 p-0.5 object-cover">
+                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-800" id="sidebar-app-username">Ánh Tuyết</h3>
+                    <button class="text-xs text-slate-400 hover:text-green-600 transition-colors flex items-center gap-1">
+                        <i class="fas fa-pen"></i> Sửa hồ sơ
+                    </button>
+                </div>
+            </div>
+
+            <nav class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden text-sm">
+                <div class="p-4">
+                    <div class="flex items-center gap-3 text-slate-700 font-semibold mb-2">
+                        <i class="far fa-user-circle text-lg text-green-600"></i>
+                        <span>Tài khoản của tôi</span>
+                    </div>
+                    <ul class="space-y-1">
+                        <li><a href="ho_so.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Hồ sơ</a></li>
+                        <li><a href="dia_chi.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Địa chỉ</a></li>
+                        <li><a href="doi_mat_khau.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Đổi mật khẩu</a></li>
+                        <li><a href="xoa_tai_khoan.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Xóa tài khoản</a></li>
+                        <li><a href="thong_tin.html" class="sidebar-active block pl-9 py-2 font-medium transition-all">Thông tin cá nhân</a></li>
+                    </ul>
+                </div>
+                <div class="border-t border-slate-50 p-4">
+                    <a href="trang_don_mua.html" class="flex items-center gap-3 text-slate-700 font-semibold hover:text-blue-600 transition-colors">
+                        <i class="fas fa-shopping-bag text-blue-500"></i>
+                        <span>Đơn mua</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="w-full md:w-3/4 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-8 border-b border-slate-50 flex justify-between items-center bg-gradient-to-r from-white to-blue-50/20">
+                <div>
+                    <h1 class="text-xl font-bold text-slate-800 uppercase tracking-tight">Xác thực danh tính cá nhân</h1>
+                    <p class="text-sm text-slate-400 mt-1">Thông tin này dùng làm hồ sơ pháp lý, hoàn toàn không ảnh hưởng đến tên hiển thị tài khoản</p>
+                </div>
+                <div class="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full border border-green-100">
+                    <i class="fas fa-check-double text-green-500 text-xs"></i>
+                    <span class="text-[11px] font-black text-green-700 uppercase tracking-wider">Hệ thống an toàn</span>
+                </div>
+            </div>
+
+            <form id="infoForm" onsubmit="handleFormSubmit(event)" class="p-8 max-w-4xl space-y-6" novalidate>
+                
+                <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-1 items-start md:items-center">
+                    <label for="input-name" class="text-xs font-black text-slate-500 uppercase tracking-wider">Chủ tài khoản pháp lý *</label>
+                    <div class="w-full max-w-md">
+                        <input type="text" id="input-name" placeholder="Ví dụ: LÊ THỊ ÁNH TUYẾT"
+                               class="w-full py-2.5 px-4 rounded-xl border border-slate-200 focus:outline-none custom-input text-sm font-bold text-slate-700 bg-slate-50/30">
+                        <div id="error-name" class="error-message"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-1 items-start md:items-center">
+                    <label for="input-cccd" class="text-xs font-black text-slate-500 uppercase tracking-wider">Số CCCD (12 chữ số) *</label>
+                    <div class="w-full max-w-md">
+                        <div class="flex items-center w-full relative">
+                            <input type="password" id="input-cccd" maxlength="12" placeholder="Nhập đủ 12 số định danh"
+                                   class="w-full py-2.5 pl-4 pr-12 rounded-xl border border-slate-200 focus:outline-none custom-input text-sm font-mono font-bold tracking-[0.15em] text-slate-700 bg-slate-50/30">
+                            <button type="button" onclick="toggleCCCD()" class="absolute right-4 text-slate-400 hover:text-green-600 transition-colors p-1">
+                                <i id="cccd-icon" class="fas fa-eye-slash text-xs"></i>
+                            </button>
+                        </div>
+                        <div id="error-cccd" class="error-message"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-1 items-start md:items-center">
+                    <label for="input-date" class="text-xs font-black text-slate-500 uppercase tracking-wider">Ngày cấp văn bản *</label>
+                    <div class="w-full max-w-md">
+                        <input type="text" id="input-date" placeholder="Ví dụ: 12/04/2023"
+                               class="w-full py-2.5 px-4 rounded-xl border border-slate-200 focus:outline-none custom-input text-sm font-bold text-slate-700 bg-slate-50/30">
+                        <div id="error-date" class="error-message"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-1 items-start md:items-center">
+                    <label for="input-email" class="text-xs font-black text-slate-500 uppercase tracking-wider">Email liên kết *</label>
+                    <div class="w-full max-w-md">
+                        <div class="flex items-center gap-3">
+                            <input type="email" id="input-email" placeholder="example@gmail.com"
+                                   class="w-full py-2.5 px-4 rounded-xl border border-slate-200 focus:outline-none custom-input text-sm font-bold text-slate-700 bg-slate-50/30">
+                            <span class="text-[9px] bg-blue-100 text-blue-600 px-2 py-1 rounded font-bold uppercase shrink-0">Chính</span>
+                        </div>
+                        <div id="error-email" class="error-message"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-1 items-center">
+                    <span class="text-xs font-black text-slate-500 uppercase tracking-wider">Mức độ tin cậy</span>
+                    <span class="text-[10px] bg-green-100 text-green-600 px-3 py-1 rounded-full font-black uppercase w-fit">Đã xác minh (KYC Lvl 2)</span>
+                </div>
+
+                <div class="pt-8 flex flex-col sm:flex-row gap-4 border-t border-slate-100">
+                    <button type="submit" class="flex-1 bg-green-600 text-white px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-wider hover:bg-green-700 transition-all shadow-lg shadow-green-100 active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-save"></i> Xác nhận lưu thông tin
+                    </button>
+                    <button type="button" onclick="handleSyncData(this)" class="flex-1 border-2 border-slate-100 text-slate-500 px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-wider hover:bg-slate-50 transition-all active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-sync-alt text-green-500"></i> Khôi phục dữ liệu gốc
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 z-[100] pointer-events-none text-sm font-medium">
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        const defaultProfile = {
+            name: "LÊ THỊ ÁNH TUYẾT",
+            cccd: "037199008889",
+            date: "12/04/2023",
+            email: "anhtuyet123@gmail.com"
+        };
+
+        // 1. Hàm nạp dữ liệu lên Form khi mở trang
+        function initProfileForm() {
+            // Đọc hồ sơ pháp lý từ biến 'fresh_mart_profile'
+            const savedData = JSON.parse(localStorage.getItem('fresh_mart_profile')) || defaultProfile;
+            
+            document.getElementById('input-name').value = savedData.name;
+            document.getElementById('input-cccd').value = savedData.cccd;
+            document.getElementById('input-date').value = savedData.date;
+            document.getElementById('input-email').value = savedData.email;
+
+            // ĐỒNG BỘ TÊN SỬ DỤNG ỨNG DỤNG: Đọc từ biến riêng 'fresh_mart_user_name' của hệ thống login
+            const appUsername = localStorage.getItem('fresh_mart_user_name') || "Ánh Tuyết";
+            updateAppLayoutNames(appUsername);
+        }
+
+        // 2. KHỐI LOGIC VALIDATION
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            document.querySelectorAll('.error-message').forEach(el => el.innerHTML = '');
+            document.querySelectorAll('input').forEach(input => input.classList.remove('border-red-500'));
+
+            let isValid = true;
+
+            const nameVal = document.getElementById('input-name').value.trim();
+            const cccdVal = document.getElementById('input-cccd').value.trim();
+            const dateVal = document.getElementById('input-date').value.trim();
+            const emailVal = document.getElementById('input-email').value.trim();
+
+            if (!nameVal) {
+                showFieldError('input-name', 'error-name', 'Họ và tên bắt buộc không được để trống.');
+                isValid = false;
+            } else if (!/^[A-Za-zÀ-ỹ\s]+$/.test(nameVal)) {
+                showFieldError('input-name', 'error-name', 'Họ và tên không hợp lệ (Không bao gồm số hay ký tự đặc biệt).');
+                isValid = false;
+            }
+
+            if (!cccdVal) {
+                showFieldError('input-cccd', 'error-cccd', 'Số CCCD không được để trống.');
+                isValid = false;
+            } else if (!/^[0-9]{12}$/.test(cccdVal)) {
+                showFieldError('input-cccd', 'error-cccd', 'Mã số CCCD không hợp lệ (Bắt buộc phải nhập chính xác 12 chữ số).');
+                isValid = false;
+            }
+
+            if (!dateVal) {
+                showFieldError('input-date', 'error-date', 'Ngày cấp văn bản không được bỏ trống.');
+                isValid = false;
+            } else {
+                const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+                if (!dateRegex.test(dateVal)) {
+                    showFieldError('input-date', 'error-date', 'Sai định dạng ngày. Vui lòng nhập đúng phom cấu trúc DD/MM/YYYY.');
+                    isValid = false;
+                } else {
+                    const [, day, month, year] = dateVal.match(dateRegex);
+                    const parsedDate = new Date(year, month - 1, day);
+                    const currentYear = 2026;
+
+                    if (parsedDate.getFullYear() != year || parsedDate.getMonth() != month - 1 || parsedDate.getDate() != day) {
+                        showFieldError('input-date', 'error-date', 'Ngày cấp vừa nhập không tồn tại thực tế trên lịch.');
+                        isValid = false;
+                    } else if (parseInt(year) > currentYear) {
+                        showFieldError('input-date', 'error-date', `Ngày cấp không được lớn hơn thời gian hiện tại (${currentYear}).`);
+                        isValid = false;
+                    }
+                }
+            }
+
+            if (!emailVal) {
+                showFieldError('input-email', 'error-email', 'Email liên kết không được để trống.');
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+                showFieldError('input-email', 'error-email', 'Cấu trúc địa chỉ Email không đúng định dạng (Thiếu ký tự @ hoặc đuôi miền).');
+                isValid = false;
+            }
+
+            if (isValid) {
+                const finalData = {
+                    name: nameVal.toUpperCase(),
+                    cccd: cccdVal,
+                    date: dateVal,
+                    email: emailVal
+                };
+
+                // FIX: Chỉ lưu thông tin vào túi hồ sơ pháp lý, TUYỆT ĐỐI KHÔNG ghi đè vào biến 'fresh_mart_user_name'
+                localStorage.setItem('fresh_mart_profile', JSON.stringify(finalData));
+
+                document.getElementById('input-name').value = finalData.name;
+                showToast("🎉 Lưu hồ sơ pháp lý thành công! Tên hiển thị ứng dụng của bạn được giữ nguyên vẹn.");
+            }
+        }
+
+        function showFieldError(inputId, errorId, msg) {
+            document.getElementById(inputId).classList.add('border-red-500');
+            document.getElementById(errorId).innerHTML = `<i class="fas fa-exclamation-circle"></i> ${msg}`;
+        }
+
+        // Hàm điền tên ứng dụng lên Sidebar và Header (Đọc từ biến login riêng biệt)
+        function updateAppLayoutNames(name) {
+            // Chuẩn hóa chữ thường viết hoa chữ cái đầu cho thẩm mỹ
+            const formatted = name.toLowerCase().replace(/(^|\s)\S/g, l => l.toUpperCase());
+            if(document.getElementById('sidebar-app-username')) document.getElementById('sidebar-app-username').innerText = formatted;
+            if(document.getElementById('header-app-username')) document.getElementById('header-app-username').innerText = formatted;
+        }
+
+        function toggleCCCD() {
+            const input = document.getElementById('input-cccd');
+            const icon = document.getElementById('cccd-icon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                showToast("🔒 Đã hiển thị số định danh nhạy cảm công khai.");
+            } else {
+                input.type = "password";
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        }
+
+        function handleSyncData(btn) {
+            const originHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner animate-spin"></i> Đang nạp...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                localStorage.setItem('fresh_mart_profile', JSON.stringify(defaultProfile));
+                initProfileForm();
+                btn.innerHTML = originHTML;
+                btn.disabled = false;
+                showToast("🔄 Đã khôi phục và đồng bộ về hồ sơ pháp lý gốc!");
+            }, 1000);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-message');
+            if (!toast || !msg) return;
+            msg.innerText = message;
+            toast.style.opacity = '1'; toast.style.transform = 'translate(-50%, -20px)';
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translate(-50%, 40px)'; }, 2500);
+        }
+
+        document.addEventListener('DOMContentLoaded', initProfileForm);
+    </script>
+
+    <script src="../../assets/js/main.js"></script>
+    <script>
+    // Hàm toggler đóng mở khẩn cấp hỗ trợ trang chủ tĩnh
+    function toggleUserDropdown(e) {
+        if(e) e.stopPropagation();
+        const menu = document.getElementById('user-dropdown-menu');
+        if(menu) menu.classList.toggle('hidden');
+    }
+    
+    window.addEventListener('click', (e) => {
+        const menu = document.getElementById('user-dropdown-menu');
+        const wrap = document.getElementById('avatar-dropdown-wrapper');
+        if (menu && wrap && !wrap.contains(e.target)) menu.classList.add('hidden');
+    });
+</script>
+</body>
+</html>

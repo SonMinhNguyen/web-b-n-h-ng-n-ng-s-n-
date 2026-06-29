@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freshmart Admin - Quản lý đơn hàng</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/globals.css">
+<link rel="stylesheet" href="../assets/css/QuanLyDonHang.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  .toolbar select.filter-select {
+    padding: 10px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #fff;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    outline: none;
+    cursor: pointer;
+  }
+  .order-id-link {
+    color: #16a34a;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .order-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.6);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+    overflow-y: auto;
+  }
+  .order-modal.open { display: flex; }
+  
+  .modal-content {
+    background: #fff;
+    width: 100%;
+    max-width: 750px;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    overflow: hidden;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-header {
+    background: #1e293b;
+    color: #fff;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .modal-header h3 { 
+    font-size: 16px; 
+    font-weight: 800; 
+    margin: 0; 
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .modal-close { 
+    background: rgba(255,255,255,0.1); 
+    border: none; 
+    color: #94a3b8; 
+    cursor: pointer; 
+    font-size: 16px; 
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { color: #fff; background: rgba(255,255,255,0.2); }
+
+  .modal-body { 
+    padding: 24px; 
+    background-color: #f8fafc; 
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+  
+  .info-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .info-card {
+    background: #fff;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+  }
+  .info-card-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 8px;
+  }
+  .info-card-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+  }
+  .info-card-row:last-child { margin-bottom: 0; }
+  .info-card-row .label { color: #64748b; font-weight: 500; }
+  .info-card-row .value { color: #1e293b; font-weight: 600; text-align: right; }
+
+  .modal-section-title { 
+    font-size: 13px; 
+    font-weight: 800; 
+    color: #1e293b; 
+    margin-bottom: 12px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .products-list-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+  }
+  .modal-item-row { 
+    display: flex; 
+    align-items: center; 
+    gap: 16px; 
+    padding: 12px 16px; 
+    border-bottom: 1px solid #f1f5f9; 
+  }
+  .modal-item-img { width: 48px; height: 48px; object-fit: cover; border-radius: 10px; border: 1px solid #e2e8f0; }
+  .modal-item-info { flex: 1; }
+  .modal-item-name { font-weight: 700; color: #1e293b; font-size: 13.5px; margin-bottom: 2px; }
+  .modal-item-cat { font-size: 11px; font-weight: 600; color: #16a34a; background: #f0fdf4; padding: 2px 6px; border-radius: 4px; display: inline-block; }
+  .modal-item-meta { font-size: 13.5px; text-align: right; }
+  
+  .modal-summary-box {
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .summary-box-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+    color: #475569;
+  }
+  .summary-box-row.total {
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 10px;
+    margin-top: 4px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e293b;
+  }
+
+  .status-wrapper {
+    position: relative;
+  }
+  .status-dropdown {
+    position: fixed !important;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    width: 160px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+    z-index: 999999 !important;
+    display: none;
+    padding: 4px 0;
+    margin-top: 4px;
+  }
+  .status-dropdown.open {
+    display: block !important;
+  }
+
+  .wait-loading-lock {
+    opacity: 0.5 !important;
+    pointer-events: none !important;
+    cursor: wait !important;
+  }
+
+  .table-card {
+    overflow: visible !important;
+  }
+  table {
+    border-collapse: collapse;
+  }
+
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</head>
+<body>
+
+<header class="top-header">
+  <div class="brand">
+    <span class="brand-icon"><i class="fa-solid fa-shop"></i></span>
+    Freshmart Admin
+  </div>
+  <div class="header-title-block">
+    <h1>Quản lý đơn hàng</h1>
+    <p>Cập nhật trạng thái, theo dõi và quản lý tất cả đơn hàng tại đây.</p>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <nav class="nav-menu">
+      <a class="nav-item active" href="../admin/QuanLyDonHang.html"><span class="nav-icon"><i class="fa-solid fa-cart-arrow-down"></i></span> Quản lý đơn hàng</a>
+      <a class="nav-item" href="../admin/QuanLySanPham.html"><span class="nav-icon"><i class="fa-solid fa-box"></i></span> Quản lý sản phẩm</a>
+      <a class="nav-item" href="../admin/QuanLyDanhGia.html"><span class="nav-icon"><i class="fa-solid fa-comments"></i></span> Quản lý đánh giá</a>
+      <a class="nav-item" href="../admin/QuanLyVoucher.html"><span class="nav-icon"><i class="fa-solid fa-tags"></i></span> Quản lý voucher</a>
+      <a class="nav-item" href="../admin/QuanLyHoanTien.html"><span class="nav-icon"><i class="fa-solid fa-undo"></i></span> Quản lý hoàn tiền</a>
+      <a class="nav-item" href="../admin/BaoCao.html"><span class="nav-icon"><i class="fa-solid fa-chart-column"></i></span> Báo cáo</a>
+    </nav>
+    <div class="nav-divider"></div>
+    <div class="nav-bottom">
+      <a class="nav-item" href="#"><span class="nav-icon"><i class="fa-solid fa-house"></i></span> Về trang chủ</a>
+      <a class="nav-item" href="../index/DangNhap.html"><span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span> Đăng xuất</a>
+      <div class="user-badge">
+        <div class="user-avatar"><i class="fa-solid fa-circle-user"></i></div>
+        Admin
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="toolbar">
+      <div class="search-box">
+        <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input id="searchInput" type="text" placeholder="Tìm kiếm theo Mã đơn, Tên khách hàng...">
+      </div>
+      
+      <select id="filterStatus" class="filter-select" onchange="handleFilterAndSort()">
+        <option value="all">🔻 Tất cả trạng thái</option>
+        <option value="pending">Chờ xác nhận</option>
+        <option value="shipping">Đang vận chuyển</option>
+        <option value="completed">Hoàn thành</option>
+        <option value="cancelled">Đã hủy</option>
+        <option value="refund">Hoàn tiền</option>
+      </select>
+
+      <select id="sortOrders" class="filter-select" onchange="handleFilterAndSort()">
+        <option value="default">⇅ Sắp xếp mặc định</option>
+        <option value="price-desc">Tổng tiền: Cao xuống thấp</option>
+        <option value="price-asc">Tổng tiền: Thấp lên cao</option>
+      </select>
+
+      <button class="export-btn" onclick="exportOrdersToCSV()"><i class="fa-solid fa-download"></i> Xuất dữ liệu (.CSV)</button>
+    </div>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Mã đơn hàng</th>
+            <th>Khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="orderTable"></tbody>
+      </table>
+
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <span class="empty-text" id="emptyText"></span>
+      </div>
+
+      <div class="table-footer">
+        <div class="table-info">Hiển thị <strong id="showCount">0</strong> của <strong id="totalCount">0</strong> đơn hàng nhóm</div>
+        <div class="pagination">
+          <button class="page-btn" disabled>Trước</button>
+          <button class="page-btn" disabled>Sau</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="order-modal" id="orderDetailModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalOrderId"><i class="fa-solid fa-file-invoice-dollar"></i> CHI TIẾT ĐƠN HÀNG</h3>
+      <button class="modal-close" onclick="closeOrderModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      
+      <div class="info-cards-grid">
+        <div class="info-card">
+          <div class="info-card-title"><i class="fa-solid fa-user-tie"></i> Thông tin giao hàng</div>
+          <div class="info-card-row">
+            <span class="label">Người nhận:</span>
+            <span class="value" id="modalCustomer">--</span>
+          </div>
+          <div class="info-card-row">
+            <span class="label">Số điện thoại:</span>
+            <span class="value" id="modalPhone">--</span>
+          </div>
+          <div class="info-card-row" style="flex-direction: column; gap: 4px; margin-top: 4px;">
+            <span class="label">Địa chỉ nhận hàng:</span>
+            <span class="value" id="modalAddress" style="text-align: left; font-size: 13px; color: #475569; display: block; margin-top: 2px;">--</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-title"><i class="fa-solid fa-credit-card"></i> Giao dịch & Thời gian</div>
+          <div class="info-card-row">
+            <span class="label">Ngày đặt mua:</span>
+            <span class="value" id="modalDate">--</span>
+          </div>
+          <div class="info-card-row">
+            <span class="label">Hình thức:</span>
+            <span class="value" id="modalMethod" style="color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 6px;">--</span>
+          </div>
+          <div class="info-card-row">
+            <span class="label">Vận chuyển:</span>
+            <span class="value" style="color: #16a34a; font-weight: bold;">Miễn phí (Free)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section-title"><i class="fa-solid fa-basket-shopping"></i> Danh sách thực phẩm đặt mua</div>
+      <div class="products-list-card" id="modalProductsList"></div>
+
+      <div class="modal-summary-box">
+        <div class="summary-box-row">
+          <span>Tạm tính giá gốc:</span>
+          <span id="modalSubTotal">0đ</span>
+        </div>
+        <div class="summary-box-row" style="color:#ef4444; font-weight:600;" id="modalDiscountRow">
+          <span>Giảm giá Voucher:</span>
+          <span id="modalDiscount">0đ</span>
+        </div>
+        <div class="summary-box-row">
+          <span>Phí giao hàng:</span>
+          <span>0đ</span>
+        </div>
+        <div class="summary-box-row total">
+          <span>TỔNG TIỀN THANH TOÁN:</span>
+          <span id="modalTotal">0đ</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+         <button onclick="closeOrderModal()" style="background-color: #64748b; color: white; padding: 10px 24px; border: none; border-radius: 8px; font-family: 'Be Vietnam Pro'; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#475569'" onmouseout="this.style.backgroundColor='#64748b'">
+           <i class="fa-solid fa-arrow-left"></i> Đóng cửa sổ
+         </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="delete-tooltip" id="deleteTooltip">
+  Đơn hàng đang trong quá trình xử lý không thể xóa
+</div>
+
+<script>
+const STATUSES = [
+  { key: 'pending',   label: 'Chờ xác nhận',    cls: 'pending'   },
+  { key: 'shipping',  label: 'Đang vận chuyển', cls: 'shipping'  },
+  { key: 'completed', label: 'Hoàn thành',      cls: 'done'      },
+  { key: 'refund',    label: 'Hoàn tiền',       cls: 'refund'    }
+];
+
+const ALL_STATUS_LABELS = {
+  'pending':        { label: 'Chờ xác nhận',    cls: 'pending' },
+  'shipping':       { label: 'Đang vận chuyển', cls: 'shipping' },
+  'completed':      { label: 'Hoàn thành',      cls: 'done' },
+  'done':           { label: 'Hoàn thành',      cls: 'done' },
+  'cancelled':      { label: 'Đã hủy',          cls: 'cancelled' },
+  'refund_pending': { label: 'Chờ duyệt hoàn tiền', cls: 'pending' },
+  'refund':         { label: 'Hoàn tiền',       cls: 'refund' },      
+  'refund_rejected':{ label: 'Hoàn tiền',       cls: 'refund' }       
+};
+
+const NON_DELETABLE = ['shipping', 'pending', 'refund_pending'];
+let orders = []; 
+let uniqueOrderGroups = []; 
+let searchQuery = '';
+let tooltipTimer = null;
+
+function loadAdminOrders() {
+    let localOrders = JSON.parse(localStorage.getItem('fresh_mart_orders'));
+    orders = localOrders ? [...localOrders] : [];
+    groupOrdersById(); 
+}
+
+function groupOrdersById() {
+  const groups = {};
+  orders.forEach(o => {
+    if (!groups[o.id]) {
+      let firstItemSum = (o.price || 0) * (o.qty || 1);
+      groups[o.id] = {
+        id: o.id,
+        customer: o.customer || o.buyer || "Khách hàng",
+        date: o.date || "--/--/----",
+        status: o.status,
+        totalNum: typeof o.totalFinalAmount !== 'undefined' ? parseInt(o.totalFinalAmount) : firstItemSum,
+        discount: o.discountApplied ? parseInt(o.discountApplied) : 0,
+        rawItems: [o] 
+      };
+    } else {
+      if (typeof o.totalFinalAmount === 'undefined') {
+         groups[o.id].totalNum += (o.price || 0) * (o.qty || 1);
+      }
+      groups[o.id].rawItems.push(o);
+    }
+  });
+  uniqueOrderGroups = Object.values(groups);
+}
+
+function getStatus(key) { 
+    return ALL_STATUS_LABELS[key] || { label: 'Chờ xác nhận', cls: 'pending' }; 
+}
+
+function handleFilterAndSort() {
+  const filterVal = document.getElementById('filterStatus').value;
+  const sortVal = document.getElementById('sortOrders').value;
+  const q = searchQuery.toLowerCase();
+
+  let processed = uniqueOrderGroups.filter(o => {
+    const matchSearch = (o.id && o.id.toLowerCase().includes(q)) || (o.customer && o.customer.toLowerCase().includes(q)) || (o.date && o.date.includes(q));
+    
+    let matchStatus = false;
+    if (filterVal === 'all') {
+      matchStatus = true;
+    } else if (filterVal === 'refund') {
+      matchStatus = ['refund', 'refund_pending', 'refund_rejected'].includes(o.status);
+    } else {
+      matchStatus = o.status === filterVal;
+    }
+    
+    return matchSearch && matchStatus;
+  });
+
+  if (sortVal === 'price-desc') {
+    processed.sort((a, b) => b.totalNum - a.totalNum);
+  } else if (sortVal === 'price-asc') {
+    processed.sort((a, b) => a.totalNum - b.totalNum);
+  }
+
+  renderTableData(processed);
+}
+
+function renderTableData(dataList) {
+  const tbody       = document.getElementById('orderTable');
+  const emptyState = document.getElementById('emptyState');
+  const emptyText  = document.getElementById('emptyText');
+
+  tbody.innerHTML = '';
+
+  if (dataList.length === 0) {
+    emptyState.style.display = 'flex';
+    emptyText.textContent = searchQuery ? 'Không tìm thấy đơn hàng phù hợp.' : 'Không có đơn hàng nào thuộc bộ lọc này.';
+  } else {
+    emptyState.style.display = 'none';
+    dataList.forEach((o) => {
+      const st       = getStatus(o.status);
+      const canDelete = !NON_DELETABLE.includes(o.status);
+      const isUserActionState = ['cancelled'].includes(o.status);
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="order-id"><span class="order-id-link" onclick="openOrderModal('${o.id}')">${o.id || '#FB-Unknown'}</span></td>
+        <td>${o.customer}</td>
+        <td>${o.date}</td>
+        <td style="font-weight:700; color:#16a34a;">${o.totalNum.toLocaleString('vi-VN')}đ</td>
+        <td>
+          <div class="status-wrapper" id="sw-wrapper-${o.id}">
+            <div class="status-badge ${st.cls}" ${isUserActionState ? '' : `onclick="toggleDropdown('${o.id}', event)" style="cursor:pointer;"`}>
+              <span>${st.label}</span>
+              ${isUserActionState ? '' : '<span style="font-size:11px"> ▲</span>'}
+            </div>
+            <div class="status-dropdown" id="dd-${o.id}">
+              ${STATUSES.map(s => `
+                <div class="dropdown-option" onclick="changeStatusById('${o.id}', '${s.key}')">
+                  <span class="dot ${s.cls}"></span> ${s.label}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="action-btns">
+            <button class="action-btn" title="Xem chi tiết đơn hàng" onclick="openOrderModal('${o.id}')">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button
+              class="action-btn delete ${canDelete ? '' : 'disabled-delete'}"
+              title="${canDelete ? 'Xóa đơn hàng' : 'Không thể xóa đơn hàng hiện hành'}"
+              onclick="deleteOrderById('${o.id}', event)"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.getElementById('showCount').textContent = dataList.length;
+  document.getElementById('totalCount').textContent = uniqueOrderGroups.length;
+}
+
+function renderTable() {
+  handleFilterAndSort();
+}
+
+function toggleDropdown(orderId, e) {
+  e.stopPropagation();
+  
+  document.querySelectorAll('.status-dropdown').forEach(d => {
+    if (d.id !== `dd-${orderId}`) d.classList.remove('open');
+  });
+
+  const dropdown = document.getElementById(`dd-${orderId}`);
+  if(dropdown) {
+    const badge = e.currentTarget;
+    const rect = badge.getBoundingClientRect();
+    
+    dropdown.style.top = (rect.bottom + 4) + 'px';
+    dropdown.style.left = rect.left + 'px';
+    dropdown.classList.toggle('open');
+  }
+}
+
+async function changeStatusById(orderId, key) {
+  const targetWrapper = document.getElementById(`sw-wrapper-${orderId}`);
+  if (targetWrapper) {
+      targetWrapper.classList.add('wait-loading-lock');
+  }
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  orders.forEach((o, idx) => {
+    if (o.id === orderId) {
+      if (key === 'refund' || key === 'refund_rejected' || key === 'refund_pending') {
+          orders[idx].status = 'refund';
+      } else {
+          orders[idx].status = key;
+      }
+
+      if (key === 'completed') {
+          orders[idx].deliveredTime = new Date().toISOString();
+      } else {
+          delete orders[idx].deliveredTime;
+      }
+    }
+  });
+
+  localStorage.setItem('fresh_mart_orders', JSON.stringify(orders)); 
+  loadAdminOrders(); 
+  handleFilterAndSort();
+
+  if (targetWrapper) {
+      targetWrapper.classList.remove('wait-loading-lock');
+  }
+}
+
+function deleteOrderById(orderId, e) {
+  e.stopPropagation();
+  const matched = orders.filter(o => o.id === orderId);
+  if (matched.length === 0) return;
+
+  if (NON_DELETABLE.includes(matched[0].status)) {
+    showDeleteTooltip(e.currentTarget);
+    return;
+  }
+
+  if (confirm(`Xóa vĩnh viễn toàn bộ đơn hàng có mã ${orderId}?`)) {
+    orders = orders.filter(o => o.id !== orderId); 
+    localStorage.setItem('fresh_mart_orders', JSON.stringify(orders)); 
+    loadAdminOrders();
+    handleFilterAndSort();
+  }
+}
+
+function showDeleteTooltip(btn) {
+  const tooltip = document.getElementById('deleteTooltip');
+  const rect    = btn.getBoundingClientRect();
+  tooltip.style.top  = (rect.bottom + window.scrollY + 8) + 'px';
+  tooltip.style.left = (rect.left + window.scrollX - 60) + 'px';
+  tooltip.classList.add('visible');
+
+  clearTimeout(tooltipTimer);
+  tooltipTimer = setTimeout(() => tooltip.classList.remove('visible'), 2800);
+}
+
+function openOrderModal(orderId) {
+  const matchedItems = orders.filter(o => o.id === orderId);
+  if (matchedItems.length === 0) return;
+
+  const firstItem = matchedItems[0];
+  const methodMap = { 'cod': '💵 Tiền mặt (COD)', 'qr': '🏦 Ngân hàng (QR Code)', 'wallet': '📱 Ví điện tử FreshPay' };
+
+  document.getElementById('modalOrderId').innerHTML = `<i class="fa-solid fa-file-invoice-dollar"></i> CHI TIẾT: <span style="color:#22c55e;">${orderId}</span>`;
+  document.getElementById('modalCustomer').innerText = firstItem.customer || firstItem.buyer || "Khách hàng";
+  document.getElementById('modalPhone').innerText = firstItem.phone || "091234567";
+  document.getElementById('modalAddress').innerText = firstItem.address || "Chưa cập nhật địa chỉ";
+  document.getElementById('modalDate').innerText = firstItem.date || "--/--/----";
+  document.getElementById('modalMethod').innerText = methodMap[firstItem.payMethod] || firstItem.payMethod || 'Tiền mặt (COD)';
+      
+  let orderSubTotal = 0;
+  const listContainer = document.getElementById('modalProductsList');
+  listContainer.innerHTML = '';
+
+  matchedItems.forEach(item => {
+    const itemPrice = item.price || 0;
+    const itemQty = item.qty || 1;
+    orderSubTotal += (itemPrice * itemQty);
+
+    listContainer.insertAdjacentHTML('beforeend', `
+      <div class="modal-item-row">
+        <img src="${item.image}" class="modal-item-img">
+        <div class="modal-item-info">
+          <div class="modal-item-name">${item.name}</div>
+          <span class="modal-item-cat">${item.category || 'Nông sản'}</span>
+        </div>
+        <div class="modal-item-meta">
+          <span style="color:#64748b; font-weight:500;">${itemPrice.toLocaleString('vi-VN')}đ x ${itemQty}</span>
+          <p style="margin:2px 0 0 0; font-weight:700; color:#16a34a;">${(itemPrice * itemQty).toLocaleString('vi-VN')}đ</p>
+        </div>
+      </div>
+    `);
+  });
+
+  const discountAmt = firstItem.discountApplied ? parseInt(firstItem.discountApplied) : 0;
+  const finalTotal = typeof firstItem.totalFinalAmount !== 'undefined' ? parseInt(firstItem.totalFinalAmount) : orderSubTotal;
+
+  document.getElementById('modalSubTotal').innerText = orderSubTotal.toLocaleString('vi-VN') + 'đ';
+  document.getElementById('modalDiscount').innerText = `-${discountAmt.toLocaleString('vi-VN')}đ`;
+  document.getElementById('modalTotal').innerText = finalTotal.toLocaleString('vi-VN') + 'đ';
+
+  document.getElementById('orderDetailModal').classList.add('open');
+}
+
+function closeOrderModal() {
+  document.getElementById('orderDetailModal').classList.remove('open');
+}
+
+function exportOrdersToCSV() {
+  if (uniqueOrderGroups.length === 0) {
+    alert("Danh sách đơn hàng trống, không có dữ liệu để xuất file!");
+    return;
+  }
+  let csvContent = "\uFEFFMã đơn hàng,Khách hàng,Ngày đặt,Tổng tiền hóa đơn,Trạng thái hiện tại\n";
+  uniqueOrderGroups.forEach(o => {
+    const stLabel = getStatus(o.status).label;
+    csvContent += `"${o.id}","${o.customer}","${o.date}",${o.totalNum},"${stLabel}"\n`;
+  });
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute("download", "Báo_Cáo_Đơn_Hàng_FreshMart.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+document.getElementById('searchInput').addEventListener('input', function () {
+  searchQuery = this.value.trim();
+  handleFilterAndSort();
+});
+
+window.addEventListener('click', () => {
+  document.querySelectorAll('.status-dropdown').forEach(d => d.classList.remove('open'));
+});
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.status-dropdown').forEach(d => d.classList.remove('open'));
+});
+
+loadAdminOrders();
+handleFilterAndSort();
+</script>
+</body>
+</html>

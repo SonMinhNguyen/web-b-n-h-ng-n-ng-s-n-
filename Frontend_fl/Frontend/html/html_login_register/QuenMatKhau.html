@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fresh Mart - Quên mật khẩu</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../asset/globals.css">
+<link rel="stylesheet" href="../asset/QuenMatKhau.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style> 
+body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .product-card { background-color: #ffffff; transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .rating-box { border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 16px; text-align: center; min-width: 80px; transition: all 0.2s; }
+        .rating-box:hover { border-color: #16a34a; background-color: #f0fdf4; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        #search-input::placeholder { font-size: 13px; opacity: 0.8; }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --green-dark:    #2d5a27;
+  --green-primary: #4caf50;
+  --green-bg:      hsl(113, 33%, 90%);
+  --green-card:    #dfeedd;
+  --green-footer:  #6db86f;
+
+  --red-primary:   #c0392b;
+  --red-hover:     #a93226;
+
+  --gray-bg:       #f0f0ec;
+  --gray-200:      #e5e7eb;
+  --gray-500:      #6b7280;
+  --gray-900:      #111827;
+
+  --input-bg:      #daeaf5;
+
+  --font:          'Be Vietnam Pro', sans-serif;
+  --font-brand:    'Playfair Display', serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--gray-bg);
+  color: var(--gray-900);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+  background: var(--green-bg);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+  gap: 24px;
+  border-bottom: 1px solid #c8dfc5;
+  flex-shrink: 0;
+}
+
+.nav-brand {
+  font-family: var(--font-brand);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--green-dark);
+  white-space: nowrap;
+}
+
+.nav-search {
+  flex: 1;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 0 14px;
+  height: 44px;
+  gap: 10px;
+  transition: border-color .2s;
+}
+
+.nav-search:focus-within {
+  border-color: var(--green-primary);
+}
+
+.nav-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--gray-900);
+}
+
+.nav-search input::placeholder {
+  color: #9ca3af;
+}
+
+.nav-search i {
+  color: #9ca3af;
+  font-size: 16px;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-left: auto;
+}
+
+.nav-icon-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: var(--gray-900);
+  cursor: pointer;
+  transition: color .15s;
+}
+
+.nav-icon-btn:hover {
+  color: var(--green-dark);
+}
+
+.nav-btn {
+  height: 40px;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .15s;
+}
+
+.btn-register {
+  background: var(--green-dark);
+  border: 2px solid var(--green-dark);
+  color: #fff;
+}
+
+.btn-register:hover {
+  background: #234820;
+  border-color: #234820;
+}
+
+.btn-login {
+  background: transparent;
+  border: 2px solid var(--gray-200);
+  color: var(--gray-900);
+}
+
+.btn-login:hover {
+  border-color: var(--green-dark);
+  color: var(--green-dark);
+}
+
+/* ================= MAIN ================= */
+
+.page-body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--green-card);
+  border-radius: 18px;
+  padding: 46px 48px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.auth-card h2 {
+  font-size: 34px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 10px;
+  color: var(--gray-900);
+}
+
+.auth-subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+/* ================= FORM ================= */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.form-group input {
+  width: 100%;
+  height: 50px;
+  background: var(--input-bg);
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  outline: none;
+  transition: .2s;
+}
+
+.form-group input:focus {
+  border-color: var(--green-primary);
+  background: #fff;
+}
+
+.form-group input.error {
+  border-color: var(--red-primary);
+}
+
+/* ================= ERROR ================= */
+
+.field-error {
+  font-size: 12px;
+  color: var(--red-primary);
+  margin-top: 6px;
+  min-height: 16px;
+}
+
+/* ================= BUTTON ================= */
+
+.btn-submit {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 8px;
+  background: var(--red-primary);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+  margin-top: 6px;
+}
+
+.btn-submit:hover {
+  background: var(--red-hover);
+}
+
+/* ================= BACK ROW ================= */
+
+.back-row {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 18px;
+  color: var(--gray-900);
+}
+
+.link-red {
+  color: var(--red-primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.link-red:hover {
+  opacity: .75;
+}
+
+.link-gray {
+  color: var(--gray-500);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link-gray:hover {
+  opacity: .7;
+}
+
+/* ================= OTP ================= */
+
+.step-icon {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: #fff3e0;
+  color: #f59e0b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  margin: 0 auto 18px;
+}
+
+.step-icon.green {
+  background: #e5f6e5;
+  color: var(--green-primary);
+}
+
+.otp-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.otp-input {
+  width: 52px;
+  height: 58px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background: #fff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  outline: none;
+  transition: .2s;
+}
+
+.otp-input:focus {
+  border-color: var(--green-primary);
+}
+
+.otp-input.filled {
+  background: #f9fffa;
+}
+
+.otp-input.error-otp {
+  border-color: var(--red-primary);
+}
+
+.otp-hint {
+  text-align: center;
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 12px;
+}
+
+.resend-timer {
+  color: var(--gray-500);
+  margin-left: 4px;
+}
+
+/* ================= PASSWORD ================= */
+
+.pw-wrap {
+  position: relative;
+}
+
+.pw-wrap input {
+  padding-right: 50px;
+}
+
+.pw-eye {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--gray-500);
+  font-size: 16px;
+}
+
+.pw-strength-wrap {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pw-strength-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: #d1d5db;
+  overflow: hidden;
+}
+
+.pw-strength-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: .25s;
+}
+
+.pw-strength-label {
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 70px;
+}
+
+/* ================= TOAST ================= */
+
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: #fff;
+  border-left: 4px solid var(--red-primary);
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--red-primary);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  z-index: 999;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: .2s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast.success {
+  border-left-color: var(--green-primary);
+  color: var(--green-dark);
+}
+
+/* ================= FOOTER ================= */
+
+.footer {
+  background: var(--green-footer);
+  color: #fff;
+  padding: 40px 64px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 32px;
+}
+
+.footer strong {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.footer p {
+  font-size: 13.5px;
+  line-height: 2;
+  color: rgba(255,255,255,0.9);
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.social-icons i {
+  font-size: 24px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+
+.social-icons i:hover {
+  opacity: .75;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+
+  .navbar {
+    padding: 16px 20px;
+    flex-wrap: wrap;
+    height: auto;
+  }
+
+  .nav-search {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .auth-card {
+    padding: 36px 24px;
+  }
+
+  .auth-card h2 {
+    font-size: 28px;
+  }
+
+  .otp-wrap {
+    gap: 8px;
+  }
+
+  .otp-input {
+    width: 44px;
+    height: 52px;
+    font-size: 22px;
+  }
+
+  .footer {
+    padding: 32px 24px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]" style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="index.html">Fresh Mart</a>
+            </h1>
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white text-[13px]">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4" style="margin-left: -6cm;">
+                <a href="gio_hang.html" id="cart-icon" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                    <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+                </a>
+                <a href="dang_ky.html" class="border border-green-700 bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 min-w-[140px] text-center text-sm font-bold shadow-sm">Đăng ký</a>
+                <a href="dang_nhap.html" class="border border-green-700 text-green-700 px-6 py-2 rounded-lg hover:bg-green-50 min-w-[140px] text-center text-sm font-bold bg-white shadow-sm">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- MAIN -->
+<div class="page-body">
+
+  <!-- ══ BƯỚC 1: NHẬP EMAIL ══ -->
+  <div class="auth-card" id="step1">
+    <h2>Quên mật khẩu</h2>
+    <p class="auth-subtitle">Bình tĩnh nào anh bạn!<br>Hãy nhập email tôi sẽ gửi mật khẩu mới cho bạn</p>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="emailInput" placeholder="">
+      <p class="field-error" id="emailError"></p>
+    </div>
+
+    <button class="btn-submit" onclick="sendCode()">Gửi yêu cầu</button>
+
+    <div class="back-row">
+      Quay lại <a href="DangNhap.html" class="link-red">Đăng nhập</a>
+    </div>
+  </div>
+
+  <!-- ══ BƯỚC 2: NHẬP MÃ CODE ══ -->
+  <div class="auth-card" id="step2" style="display:none;">
+    <div class="step-icon">
+      <i class="fa-solid fa-envelope-open-text"></i>
+    </div>
+    <h2>Xác nhận mã OTP</h2>
+    <p class="auth-subtitle">Chúng tôi đã gửi mã xác nhận gồm 6 chữ số đến<br><strong id="emailDisplay"></strong></p>
+
+    <div class="otp-wrap">
+      <input class="otp-input" maxlength="1" oninput="otpMove(this,0)" id="otp0">
+      <input class="otp-input" maxlength="1" oninput="otpMove(this,1)" id="otp1">
+      <input class="otp-input" maxlength="1" oninput="otpMove(this,2)" id="otp2">
+      <input class="otp-input" maxlength="1" oninput="otpMove(this,3)" id="otp3">
+      <input class="otp-input" maxlength="1" oninput="otpMove(this,4)" id="otp4">
+      <input class="otp-input" maxlength="1" oninput="otpMove(this,5)" id="otp5">
+    </div>
+
+    <p class="otp-hint">Mã demo: <strong id="demoCode"></strong></p>
+    <p class="field-error" id="otpError"></p>
+
+    <button class="btn-submit" onclick="verifyCode()">Xác nhận</button>
+
+    <div class="back-row">
+      Không nhận được mã? <a class="link-red" onclick="resendCode()" style="cursor:pointer">Gửi lại</a>
+      <span class="resend-timer" id="resendTimer"></span>
+    </div>
+
+    <div class="back-row" style="margin-top:4px;">
+      <a class="link-gray" onclick="showStep(1)" style="cursor:pointer">← Quay lại</a>
+    </div>
+  </div>
+
+  <!-- ══ BƯỚC 3: ĐẶT MẬT KHẨU MỚI ══ -->
+  <div class="auth-card" id="step3" style="display:none;">
+    <div class="step-icon green">
+      <i class="fa-solid fa-lock"></i>
+    </div>
+    <h2>Đặt mật khẩu mới</h2>
+    <p class="auth-subtitle">Nhập mật khẩu mới cho tài khoản của bạn</p>
+
+    <div class="form-group">
+      <label>Mật khẩu mới</label>
+      <div class="pw-wrap">
+        <input type="password" id="newPw" placeholder="" oninput="checkPwStrength()">
+        <button class="pw-eye" onclick="togglePw('newPw', 'eyeNew')"><i class="fa-solid fa-eye" id="eyeNew"></i></button>
+      </div>
+      <!-- Thanh độ mạnh mật khẩu -->
+      <div class="pw-strength-wrap" id="pwStrengthWrap" style="display:none">
+        <div class="pw-strength-bar">
+          <div class="pw-strength-fill" id="pwFill"></div>
+        </div>
+        <span class="pw-strength-label" id="pwLabel"></span>
+      </div>
+      <p class="field-error" id="newPwError"></p>
+    </div>
+
+    <div class="form-group">
+      <label>Xác nhận mật khẩu</label>
+      <div class="pw-wrap">
+        <input type="password" id="confirmPw" placeholder="">
+        <button class="pw-eye" onclick="togglePw('confirmPw', 'eyeConfirm')"><i class="fa-solid fa-eye" id="eyeConfirm"></i></button>
+      </div>
+      <p class="field-error" id="confirmPwError"></p>
+    </div>
+
+    <button class="btn-submit" onclick="updatePassword()">Cập nhật mật khẩu</button>
+  </div>
+
+  <!-- ══ BƯỚC 4: THÀNH CÔNG ══ -->
+  <div class="auth-card" id="step4" style="display:none;">
+    <div class="step-icon green">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <h2 style="color:#2d6a30">Cập nhật thành công!</h2>
+    <p class="auth-subtitle">Mật khẩu của bạn đã được thay đổi.<br>Vui lòng đăng nhập lại.</p>
+    <button class="btn-submit" onclick="window.location.href='dang_nhap.html'">Đăng nhập ngay</button>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+   <div id="footer-container"></div>
+    <script src="../../assets/js/main.js"></script>
+<script>
+let generatedCode = '';
+let resendInterval = null;
+
+// ── HIỂN THỊ BƯỚC ──
+function showStep(n) {
+  [1,2,3,4].forEach(i => {
+    document.getElementById('step' + i).style.display = i === n ? 'block' : 'none';
+  });
+}
+
+// ── BƯỚC 1: GỬI CODE ──
+function sendCode() {
+  const email = document.getElementById('emailInput').value.trim();
+  const err   = document.getElementById('emailError');
+  const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!email || !emailReg.test(email)) {
+    err.textContent = 'Vui lòng nhập email hợp lệ.';
+    document.getElementById('emailInput').classList.add('error');
+    return;
+  }
+
+  err.textContent = '';
+  document.getElementById('emailInput').classList.remove('error');
+
+  // Tạo mã 6 số ngẫu nhiên (minh họa)
+  generatedCode = String(Math.floor(100000 + Math.random() * 900000));
+
+  document.getElementById('emailDisplay').textContent = email;
+  document.getElementById('demoCode').textContent     = generatedCode;
+
+  // Reset OTP inputs
+  for (let i = 0; i < 6; i++) {
+    document.getElementById('otp' + i).value = '';
+    document.getElementById('otp' + i).classList.remove('filled', 'error-otp');
+  }
+  document.getElementById('otpError').textContent = '';
+
+  showToast('✓ Đã gửi mã xác nhận đến ' + email, 'success');
+  showStep(2);
+  document.getElementById('otp0').focus();
+  startResendTimer(60);
+}
+
+// ── OTP INPUT ──
+function otpMove(el, idx) {
+  el.classList.toggle('filled', el.value !== '');
+  if (el.value && idx < 5) {
+    document.getElementById('otp' + (idx + 1)).focus();
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Backspace') {
+    const active = document.activeElement;
+    const id = active.id;
+    if (id && id.startsWith('otp')) {
+      const idx = parseInt(id.replace('otp',''));
+      if (!active.value && idx > 0) {
+        document.getElementById('otp' + (idx - 1)).focus();
+      }
+    }
+  }
+});
+
+// ── BƯỚC 2: XÁC NHẬN CODE ──
+function verifyCode() {
+  const entered = Array.from({length:6}, (_,i) =>
+    document.getElementById('otp' + i).value
+  ).join('');
+
+  const err = document.getElementById('otpError');
+
+  if (entered.length < 6) {
+    err.textContent = 'Vui lòng nhập đủ 6 chữ số.';
+    return;
+  }
+
+  if (entered !== generatedCode) {
+    err.textContent = 'Mã xác nhận không đúng. Vui lòng thử lại.';
+    for (let i = 0; i < 6; i++) {
+      document.getElementById('otp' + i).classList.add('error-otp');
+    }
+    return;
+  }
+
+  err.textContent = '';
+  clearInterval(resendInterval);
+  showToast('✓ Xác nhận thành công!', 'success');
+  showStep(3);
+}
+
+// ── RESEND TIMER ──
+function startResendTimer(seconds) {
+  clearInterval(resendInterval);
+  const el = document.getElementById('resendTimer');
+  let s = seconds;
+  el.textContent = '(' + s + 's)';
+  resendInterval = setInterval(() => {
+    s--;
+    if (s <= 0) { clearInterval(resendInterval); el.textContent = ''; }
+    else el.textContent = '(' + s + 's)';
+  }, 1000);
+}
+
+function resendCode() {
+  if (document.getElementById('resendTimer').textContent) return;
+  generatedCode = String(Math.floor(100000 + Math.random() * 900000));
+  document.getElementById('demoCode').textContent = generatedCode;
+  for (let i = 0; i < 6; i++) {
+    document.getElementById('otp' + i).value = '';
+    document.getElementById('otp' + i).classList.remove('filled','error-otp');
+  }
+  document.getElementById('otpError').textContent = '';
+  showToast('✓ Đã gửi lại mã mới!', 'success');
+  startResendTimer(60);
+  document.getElementById('otp0').focus();
+}
+
+// ── BƯỚC 3: ĐỔI MẬT KHẨU ──
+function checkPwStrength() {
+  const pw   = document.getElementById('newPw').value;
+  const wrap = document.getElementById('pwStrengthWrap');
+  const fill = document.getElementById('pwFill');
+  const lbl  = document.getElementById('pwLabel');
+
+  if (!pw) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'flex';
+
+  let score = 0;
+  if (pw.length >= 8)            score++;
+  if (/[A-Z]/.test(pw))          score++;
+  if (/[0-9]/.test(pw))          score++;
+  if (/[^A-Za-z0-9]/.test(pw))   score++;
+
+  const levels = [
+    { w:'25%',  bg:'#e53935', text:'Yếu' },
+    { w:'50%',  bg:'#f59e0b', text:'Trung bình' },
+    { w:'75%',  bg:'#2196f3', text:'Khá mạnh' },
+    { w:'100%', bg:'#4CAF50', text:'Mạnh' },
+  ];
+
+  const lv = levels[Math.max(0, score - 1)];
+  fill.style.width      = lv.w;
+  fill.style.background = lv.bg;
+  lbl.textContent       = lv.text;
+  lbl.style.color       = lv.bg;
+}
+
+function togglePw(inputId, iconId) {
+  const inp  = document.getElementById(inputId);
+  const icon = document.getElementById(iconId);
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.className = 'fa-solid fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    icon.className = 'fa-solid fa-eye';
+  }
+}
+
+function updatePassword() {
+  const pw      = document.getElementById('newPw').value;
+  const confirm = document.getElementById('confirmPw').value;
+  const pwErr   = document.getElementById('newPwError');
+  const cfErr   = document.getElementById('confirmPwError');
+  let valid = true;
+
+  if (pw.length < 6) {
+    pwErr.textContent = 'Mật khẩu phải có ít nhất 6 ký tự.';
+    document.getElementById('newPw').classList.add('error');
+    valid = false;
+  } else {
+    pwErr.textContent = '';
+    document.getElementById('newPw').classList.remove('error');
+  }
+
+  if (pw !== confirm) {
+    cfErr.textContent = 'Mật khẩu xác nhận không khớp.';
+    document.getElementById('confirmPw').classList.add('error');
+    valid = false;
+  } else {
+    cfErr.textContent = '';
+    document.getElementById('confirmPw').classList.remove('error');
+  }
+
+  if (!valid) return;
+
+  showToast('✓ Mật khẩu đã được cập nhật!', 'success');
+  setTimeout(() => showStep(4), 800);
+}
+
+// ── TOAST ──
+function showToast(msg, type = 'error') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'toast ' + type + ' show';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

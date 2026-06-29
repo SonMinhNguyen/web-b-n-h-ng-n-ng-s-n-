@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thay đổi mật khẩu | Fresh Mart</title>
+    
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .sidebar-active {
+            background: linear-gradient(to right, #f0fdf4, #ffffff);
+            color: #16a34a;
+            border-left: 4px solid #16a34a;
+        }
+        .custom-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+        }
+                body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .product-card { background-color: #ffffff; transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .category-item-active {
+            color: #16a34a;
+            font-weight: 900;
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+        }
+        
+        #search-input::placeholder {
+    font-size: 13px; /* Bạn có thể chỉnh số này nhỏ xuống (ví dụ: 12px, 11px) */
+    opacity: 0.8;    /* Làm mờ đi một chút nếu muốn */
+}
+    </style>
+</head>
+<script>
+    // Dữ liệu ban đầu
+    let addresses = [
+        { id: 1, name: "Ánh Tuyết", phone: "0847563929", detail: "Nhà số 6, phường Thanh Liệt, Đường Kim Giang, Hà Nội", isDefault: true },
+        { id: 2, name: "Ánh Tuyết", phone: "0847563929", detail: "Nhà số 7, phường Thanh Liệt, Đường Kim Giang, Hà Nội", isDefault: false }
+    ];
+
+    // Hàm hiển thị danh sách địa chỉ (Render)
+    function renderAddresses() {
+        const listContainer = document.getElementById('address-list');
+        listContainer.innerHTML = "";
+
+        // Sắp xếp địa chỉ mặc định lên đầu
+        const sortedAddresses = [...addresses].sort((a, b) => b.isDefault - a.isDefault);
+
+        sortedAddresses.forEach(addr => {
+            const html = `
+                <div class="address-item flex flex-col md:flex-row justify-between border-b border-slate-100 pb-6 gap-4 transition-all duration-300" data-id="${addr.id}">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-3">
+                            <span class="user-name font-bold text-slate-800 border-r border-slate-300 pr-3 italic">${addr.name}</span>
+                            <span class="user-phone text-slate-500">(+84) ${addr.phone.slice(-9)}</span>
+                        </div>
+                        <p class="user-address text-sm text-slate-500">${addr.detail}</p>
+                        ${addr.isDefault ? '<span class="default-badge inline-block border border-pink-400 text-pink-500 text-[10px] px-2 py-0.5 rounded mt-2 font-medium">Mặc định</span>' : ''}
+                    </div>
+                    <div class="flex flex-col items-end gap-3 justify-start">
+                        <div class="flex gap-3">
+                            <button onclick="editAddress(${addr.id})" class="text-blue-600 text-sm hover:underline font-medium">Cập nhật</button>
+                            ${!addr.isDefault ? `<span class="text-slate-300">|</span><button onclick="deleteAddress(${addr.id})" class="text-red-500 text-sm hover:underline font-medium">Xóa</button>` : ''}
+                        </div>
+                        ${!addr.isDefault ? `<button onclick="setDefault(${addr.id})" class="set-default-btn border border-slate-300 text-slate-600 px-4 py-2 text-sm rounded hover:bg-slate-50 transition-all active:bg-slate-100">Thiết lập mặc định</button>` : ''}
+                    </div>
+                </div>
+            `;
+            listContainer.insertAdjacentHTML('beforeend', html);
+        });
+    }
+
+    // --- CÁC HÀM ĐIỀU KHIỂN MODAL ---
+    function openAddressModal() {
+        document.getElementById('modal-title').innerText = "Địa chỉ mới";
+        document.getElementById('address-form').reset();
+        document.getElementById('edit-id').value = "";
+        hideAllErrors();
+        document.getElementById('address-modal').classList.replace('hidden', 'flex');
+    }
+
+    function closeModal() {
+        document.getElementById('address-modal').classList.replace('flex', 'hidden');
+    }
+
+    function hideAllErrors() {
+        ['fullname', 'phone', 'address'].forEach(id => {
+            document.getElementById(`error-${id}`).classList.add('hidden');
+            document.getElementById(id === 'address' ? 'address-detail' : id).classList.remove('border-red-500');
+        });
+    }
+
+    function showError(id, message) {
+        const input = document.getElementById(id === 'address' ? 'address-detail' : id);
+        const error = document.getElementById(`error-${id}`);
+        input.classList.add('border-red-500');
+        error.innerText = message;
+        error.classList.remove('hidden');
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').innerText = message;
+        toast.style.opacity = '1';
+        toast.style.transform = 'translate(-50%, -20px)';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translate(-50%, 40px)';
+        }, 3000);
+    }
+
+    // --- XỬ LÝ DỮ LIỆU ---
+    function validateAndSave() {
+        const name = document.getElementById('fullname').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const detail = document.getElementById('address-detail').value.trim();
+        const editId = document.getElementById('edit-id').value;
+        const phoneRegex = /^(0|84)(3|5|7|8|9)([0-9]{8})$/;
+        
+        let isValid = true;
+        hideAllErrors();
+
+        if (!name) { showError('fullname', 'Họ tên không được để trống'); isValid = false; }
+        if (!phone) { showError('phone', 'Số điện thoại không được để trống'); isValid = false; }
+        else if (!phoneRegex.test(phone)) { showError('phone', 'SĐT phải đúng 10 số (VN)'); isValid = false; }
+        if (!detail) { showError('address', 'Địa chỉ không được để trống'); isValid = false; }
+
+        if (isValid) {
+            if (editId) {
+                // Cập nhật địa chỉ cũ
+                const index = addresses.findIndex(a => a.id == editId);
+                addresses[index] = { ...addresses[index], name, phone, detail };
+                showToast("Đã cập nhật thông tin thành công!");
+            } else {
+                // Thêm địa chỉ mới
+                const newAddr = { id: Date.now(), name, phone, detail, isDefault: false };
+                addresses.push(newAddr);
+                showToast("Thêm địa chỉ mới thành công!");
+            }
+            closeModal();
+            renderAddresses();
+        }
+    }
+
+    function setDefault(id) {
+        addresses.forEach(addr => addr.isDefault = (addr.id === id));
+        renderAddresses();
+        showToast("Đã thiết lập địa chỉ mặc định!");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function editAddress(id) {
+        const addr = addresses.find(a => a.id === id);
+        document.getElementById('modal-title').innerText = "Chỉnh sửa địa chỉ";
+        document.getElementById('edit-id').value = addr.id;
+        document.getElementById('fullname').value = addr.name;
+        document.getElementById('phone').value = addr.phone;
+        document.getElementById('address-detail').value = addr.detail;
+        
+        hideAllErrors();
+        document.getElementById('address-modal').classList.replace('hidden', 'flex');
+    }
+
+    function deleteAddress(id) {
+        if (confirm("Bạn có chắc chắn muốn xóa địa chỉ này?")) {
+            addresses = addresses.filter(a => a.id !== id);
+            renderAddresses();
+            showToast("Đã xóa địa chỉ!");
+        }
+    }
+
+    // Chạy render ngay khi trang tải
+    document.addEventListener('DOMContentLoaded', renderAddresses);
+</script>
+<body class="bg-[#f8fafc] min-h-screen">
+
+   <!-- Header  -->
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]"
+                style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="trang_chu.html">Fresh Mart</a>
+            </h1>
+            
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" text-[16px] id="search-input" oninput="filterProducts()" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4" style="margin-left: -6cm;">
+            <a href="gio_hang.html" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+            </a>
+
+            <button class="bg-[#f6f7ef] px-6 py-2 rounded-3xl text-[14px] font-semibold text-[#456b3f] hover:bg-white transition">
+                <a href="../html_person/ho_so.html" class="inline-flex items-center">
+                    Ánh Tuyết
+                </a>
+            </button>
+
+            <div class="relative inline-block text-left" id="avatar-dropdown-wrapper">
+                <img src="https://i.pravatar.cc/120?img=32" alt="avatar" 
+                    onclick="toggleUserDropdown(event)" 
+                    class="w-[50px] h-[50px] rounded-full object-cover border-2 border-green-200 hover:border-green-500 cursor-pointer transition-all">
+                
+                <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[100]">
+                    <a href="../html_person/ho_so.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Hồ sơ cá nhân
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_person/trang_don_mua.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Đơn mua
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_login_register/dang_nhap.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                    <button onclick="handleUserLogout()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition">
+                        <i class="fas fa-sign-out-alt text-xs w-4"></i> Đăng xuất
+                    </button></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+        <nav class="bg-[#ffffff]  border-white">
+            <div class="max-w-[1920px] mx-auto px-16">
+                <ul class="flex items-center justify-between h-[35px]">
+                    <li><a href="../html_main/trang_chu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Trang chủ</a></li>
+                    <li><a href="../html_main/trang_gioi_thieu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Giới thiệu</a></li>
+                    <li><a href="../html_main/trang_san_pham.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Sản phẩm</a></li>
+                    <li><a href="../html_main/trang_cau_hoi.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Câu hỏi</a></li>
+                    <li><a href="../html_main/trang_tin_tuc.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Tin tức</a></li>
+                    <li><a href="../html_main/trang_lien_he.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Liên hệ</a></li>
+                </ul>
+            </div>
+        </nav>
+</header>
+
+
+    <div class="max-w-8xl mx-auto flex flex-col md:flex-row gap-8 py-10 px-4">
+        
+        <!-- Sidebar -->
+                <!-- Sidebar -->
+        <aside class="w-full md:w-1/4 space-y-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="relative">
+                    <img src="https://i.pravatar.cc/150?img=32" alt="Avatar" class="w-14 h-14 rounded-full border-2 border-green-500 p-0.5 object-cover">
+                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-800">Ánh Tuyết</h3>
+                    <button class="text-xs text-slate-400 hover:text-green-600 transition-colors flex items-center gap-1">
+                        <i class="fas fa-pen"></i> Sửa hồ sơ
+                    </button>
+                </div>
+            </div>
+
+            <nav class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden text-sm">
+                <div class="p-4">
+                    <div class="flex items-center gap-3 text-slate-700 font-semibold mb-2">
+                        <i class="far fa-user-circle text-lg text-green-600"></i>
+                        <span>Tài khoản của tôi</span>
+                    </div>
+                    <ul class="space-y-1">
+                        <li><a href="ho_so.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Hồ sơ</a></li>
+                        <li><a href="dia_chi.html" class="sidebar-active block pl-9 py-2 font-medium transition-all">Địa chỉ</a></li>
+                        <li><a href="doi_mat_khau.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Đổi mật khẩu</a></li>
+                        <li><a href="xoa_tai_khoan.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Xóa tài khoản</a></li>
+                        <li><a href="thong_tin.html" class="block pl-9 py-2 text-slate-500 hover:text-green-600 hover:bg-slate-50 transition-all">Thông tin cá nhân</a></li>
+                    </ul>
+                </div>
+                <div class="border-t border-slate-50 p-4">
+                    <a href="trang_don_mua.html" class="flex items-center gap-3 text-slate-700 font-semibold hover:text-blue-600 transition-colors">
+                        <i class="fas fa-shopping-bag text-blue-500"></i>
+                        <span>Đơn mua</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+<main class="w-full md:w-3/4 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="p-6 md:p-8 border-b border-slate-50 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-slate-800">Địa chỉ của tôi</h1>
+        <button onclick="openAddressModal()" class="bg-[#00b121] hover:bg-green-700 active:scale-95 text-white px-5 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-lg shadow-green-100">
+            <i class="fas fa-plus-square"></i> Thêm địa chỉ mới
+        </button>
+    </div>
+
+    <div class="p-6 md:p-8 space-y-6" id="address-list"></div>
+</main>
+
+<div id="address-modal" class="fixed inset-0 bg-black/60 hidden z-[100] items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white w-full max-w-md rounded-[32px] p-8 shadow-2xl transition-all border border-green-50">
+        <h3 id="modal-title" class="text-2xl font-bold mb-6 text-slate-800 uppercase tracking-tight">Địa chỉ mới</h3>
+        <form id="address-form" class="space-y-4">
+            <input type="hidden" id="edit-id">
+            <div>
+                <input type="text" id="fullname" placeholder="Họ và tên" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-green-500 transition-all text-sm">
+                <p id="error-fullname" class="text-[10px] text-red-500 mt-1 hidden font-bold uppercase ml-2"></p>
+            </div>
+            <div>
+                <input type="text" id="phone" placeholder="Số điện thoại" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-green-500 transition-all text-sm">
+                <p id="error-phone" class="text-[10px] text-red-500 mt-1 hidden font-bold uppercase ml-2"></p>
+            </div>
+            <div>
+                <textarea id="address-detail" placeholder="Địa chỉ cụ thể" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-green-500 transition-all h-24 text-sm resize-none"></textarea>
+                <p id="error-address" class="text-[10px] text-red-500 mt-1 hidden font-bold uppercase ml-2"></p>
+            </div>
+        </form>
+        <div class="flex justify-end gap-3 mt-8">
+            <button onclick="closeModal()" class="px-6 py-2 text-slate-400 font-bold">Hủy</button>
+            <button onclick="validateAndSave()" class="bg-[#00b121] text-white px-10 py-3 rounded-2xl font-bold hover:bg-green-700 transition-all active:scale-95 uppercase text-xs">Lưu địa chỉ</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 z-[200] pointer-events-none text-sm font-medium">
+    <span id="toast-message"></span>
+</div>
+
+        <div id="address-modal" class="fixed inset-0 bg-black/50 hidden z-[100] items-center justify-center p-4">
+            <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl scale-95 transition-transform">
+                <h3 class="text-xl font-bold mb-6 text-slate-800">Thông tin địa chỉ mới</h3>
+                <div class="space-y-4">
+                    <input type="text" placeholder="Họ và tên" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-green-500 transition-all">
+                    <input type="text" placeholder="Số điện thoại" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-green-500 transition-all">
+                    <textarea placeholder="Địa chỉ cụ thể" class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-green-500 transition-all h-24"></textarea>
+                </div>
+                <div class="flex justify-end gap-4 mt-8">
+                    <button onclick="toggleModal('address-modal')" class="px-6 py-2 text-slate-500 font-bold">Hủy</button>
+                    <button onclick="toggleModal('address-modal')" class="bg-green-600 text-white px-8 py-2 rounded-xl font-bold hover:bg-green-700 shadow-lg shadow-green-100">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+    <script src="../../assets/js/main.js"></script>
+    <script>
+    // Hàm toggler đóng mở khẩn cấp hỗ trợ trang chủ tĩnh
+    function toggleUserDropdown(e) {
+        if(e) e.stopPropagation();
+        const menu = document.getElementById('user-dropdown-menu');
+        if(menu) menu.classList.toggle('hidden');
+    }
+    
+    window.addEventListener('click', (e) => {
+        const menu = document.getElementById('user-dropdown-menu');
+        const wrap = document.getElementById('avatar-dropdown-wrapper');
+        if (menu && wrap && !wrap.contains(e.target)) menu.classList.add('hidden');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa hàng thực phẩm sạch | Fresh Mart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .product-card { background-color: #ffffff; transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .category-item-active {
+            color: #16a34a;
+            font-weight: 900;
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+        }
+        
+        #search-input::placeholder {
+    font-size: 13px; /* Bạn có thể chỉnh số này nhỏ xuống (ví dụ: 12px, 11px) */
+    opacity: 0.8;    /* Làm mờ đi một chút nếu muốn */
+}
+    </style>
+</head>
+<body class="bg-slate-50">
+
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]"
+                style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="trang_chu.html">Fresh Mart</a>
+            </h1>
+            
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" text-[16px] id="search-input" oninput="filterProducts()" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4" style="margin-left: -6cm;">
+            <a href="gio_hang.html" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+            </a>
+
+            <button class="bg-[#f6f7ef] px-6 py-2 rounded-3xl text-[14px] font-semibold text-[#456b3f] hover:bg-white transition">
+                <a href="../html_person/ho_so.html" class="inline-flex items-center">
+                    Ánh Tuyết
+                </a>
+            </button>
+
+            <div class="relative inline-block text-left" id="avatar-dropdown-wrapper">
+                <img src="https://i.pravatar.cc/120?img=32" alt="avatar" 
+                    onclick="toggleUserDropdown(event)" 
+                    class="w-[50px] h-[50px] rounded-full object-cover border-2 border-green-200 hover:border-green-500 cursor-pointer transition-all">
+                
+                <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[100]">
+                    <a href="../html_person/ho_so.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Hồ sơ cá nhân
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_person/trang_don_mua.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Đơn mua
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_login_register/dang_nhap.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                    <button onclick="handleUserLogout()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition">
+                        <i class="fas fa-sign-out-alt text-xs w-4"></i> Đăng xuất
+                    </button></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+        <nav class="bg-[#ffffff]  border-white">
+            <div class="max-w-[1920px] mx-auto px-16">
+                <ul class="flex items-center justify-between h-[35px]">
+                    <li><a href="trang_chu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Trang chủ</a></li>
+                    <li><a href="trang_gioi_thieu.html" class="text-[14px] font-semibold text-green-700 hover:text-green-700 transition">Giới thiệu</a></li>
+                    <li><a href="trang_san_pham.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Sản phẩm</a></li>
+                    <li><a href="trang_cau_hoi.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Câu hỏi</a></li>
+                    <li><a href="trang_tin_tuc.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Tin tức</a></li>
+                    <li><a href="trang_lien_he.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Liên hệ</a></li>
+                </ul>
+            </div>
+        </nav>
+</header>
+
+
+<!-- PHẦN THÂN: TỔNG QUAN CHUYÊN SÂU (NÔNG NGHIỆP TỬ TẾ) -->
+    <main class="content-body py-24 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4">
+            
+            <!-- SECTION 1: KHỞI NGUỒN & TRIẾT LÝ -->
+            <div class="text-center mb-24">
+                <span class="text-green-600 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Hành trình xanh từ 2026</span>
+                <h2 class="text-4xl md:text-6xl font-black text-[#2f6b2f] mb-8 tracking-tighter leading-tight">
+                    NÂNG NIU GIÁ TRỊ <br class="hidden md:block"> NÔNG SẢN VIỆT
+                </h2>
+                <div class="w-32 h-1.5 bg-green-500 mx-auto rounded-full mb-10"></div>
+                <p class="text-xl leading-relaxed text-gray-600 max-w-4xl mx-auto font-medium">
+                    Fresh Mart ra đời từ khát vọng mang đến những bữa ăn không chỉ ngon mà còn phải thực sự "sạch" và "lành". Chúng tôi chọn đồng hành cùng những người nông dân tử tế, tôn trọng quy luật của tự nhiên để gìn giữ vẹn nguyên hương vị đất trời trong từng sản phẩm.
+                </p>
+            </div>
+
+            <!-- SECTION 2: BỐN TRỤ CỘT NIỀM TIN (EXPANDED INFO) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32">
+                <div class="p-10 bg-[#f9fbf9] rounded-[45px] border border-green-50 transition-all hover:shadow-2xl hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-green-600 shadow-sm mb-6 group-hover:bg-green-600 group-hover:text-white transition-all">
+                        <i class="fas fa-seedling text-2xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-3 text-gray-800">Canh tác thuận tự nhiên</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">Ưu tiên sử dụng phân bón hữu cơ, nói không với thuốc trừ sâu hóa học và chất kích thực tăng trưởng.</p>
+                </div>
+
+                <div class="p-10 bg-[#f9fbf9] rounded-[45px] border border-green-50 transition-all hover:shadow-2xl hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-green-600 shadow-sm mb-6 group-hover:bg-green-600 group-hover:text-white transition-all">
+                        <i class="fas fa-hand-holding-heart text-2xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-3 text-gray-800">Tuyển chọn thủ công</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">Mỗi trái cây, nhành rau đều được kiểm tra kỹ lưỡng về độ tươi, màu sắc và kích thước trước khi lên kệ.</p>
+                </div>
+
+                <div class="p-10 bg-[#f9fbf9] rounded-[45px] border border-green-50 transition-all hover:shadow-2xl hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-green-600 shadow-sm mb-6 group-hover:bg-green-600 group-hover:text-white transition-all">
+                        <i class="fas fa-wind text-2xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-3 text-gray-800">Giao hàng tươi mới</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">Hệ thống xe vận chuyển chuyên dụng đảm bảo rau củ không bị dập nát và giữ được độ giòn sau thu hoạch.</p>
+                </div>
+
+                <div class="p-10 bg-[#f9fbf9] rounded-[45px] border border-green-50 transition-all hover:shadow-2xl hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-green-600 shadow-sm mb-6 group-hover:bg-green-600 group-hover:text-white transition-all">
+                        <i class="fas fa-shield-virus text-2xl"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-3 text-gray-800">An toàn tuyệt đối</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">Quy trình sơ chế đạt chuẩn vệ sinh an toàn thực phẩm, giúp bạn yên tâm trong từng bữa cơm gia đình.</p>
+                </div>
+            </div>
+
+            <!-- SECTION 3: RAU CỦ - TINH TÚY TỪ ĐẤT MẸ -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center mb-32">
+                <div class="space-y-8 order-2 lg:order-1">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-bold uppercase tracking-tighter">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Thu hoạch mỗi sáng
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 leading-tight uppercase">Rau củ sạch tiêu chuẩn <br> Khơi nguồn năng lượng xanh</h3>
+                    <p class="text-gray-600 leading-relaxed text-justify italic">
+                        "Tại các trang trại đối tác của Fresh Mart, rau củ không chỉ được trồng mà còn được chăm sóc bằng sự tận tâm. Chúng tôi tin rằng những cây rau lớn lên khỏe mạnh sẽ mang lại nguồn năng lượng sống dồi dào nhất."
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="space-y-4 font-semibold text-gray-800">
+                            <p class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check-circle text-green-500"></i> Không biến đổi gen (Non-GMO)
+                            </p>
+                            <p class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check-circle text-green-500"></i> Nguồn nước tưới sạch 100%
+                            </p>
+                        </div>
+                        <div class="space-y-4 font-semibold text-gray-800">
+                            <p class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check-circle text-green-500"></i> Kiểm định định kỳ mỗi tuần
+                            </p>
+                            <p class="flex items-center gap-3 text-sm">
+                                <i class="fas fa-check-circle text-green-500"></i> Đóng gói sinh học bảo vệ môi trường
+                            </p>
+                        </div>
+                    </div>
+                    <button class="bg-[#2f6b2f] text-white px-10 py-3 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-green-800 transition-all shadow-xl shadow-green-900/20">
+                        Tìm hiểu quy trình trồng
+                    </button>
+                </div>
+                <div class="relative order-1 lg:order-2">
+                    <img src="https://images.unsplash.com/photo-1595855759920-86582396756a?q=80&w=2000" 
+                         alt="Green Farm" class="rounded-[60px] shadow-3xl h-[600px] w-full object-cover">
+                    <div class="absolute -top-10 -right-10 bg-white p-8 rounded-[40px] shadow-2xl hidden md:block">
+                        <div class="text-center">
+                            <span class="block text-4xl font-black text-green-600 italic">0%</span>
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">Hóa chất độc hại</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: TRÁI CÂY - QUÀ TẶNG CỦA MÙA VỤ -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="relative group">
+                    <img src="https://images.unsplash.com/photo-1519996529931-28324d5a630e?q=80&w=2000" 
+                         alt="Fresh Fruit" class="rounded-[60px] shadow-3xl h-[600px] w-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-[60px] flex items-end p-12">
+                        <p class="text-white text-lg font-medium italic">"Mỗi loại quả là một bản giao hưởng của vị ngọt và hương thơm."</p>
+                    </div>
+                </div>
+                <div class="space-y-8">
+                    <h3 class="text-3xl font-bold text-gray-900 leading-tight uppercase">Trái cây đúng vụ <br> Giữ trọn vitamin tự nhiên</h3>
+                    <p class="text-gray-600 leading-relaxed text-justify">
+                        Fresh Mart từ chối cung cấp trái cây chín ép hoặc sử dụng chất bảo quản lâu ngày. Chúng tôi chỉ mang đến những loại trái đang vào mùa tốt nhất từ các địa phương uy tín nhất Việt Nam, đảm bảo độ chín cây tự nhiên và vị ngọt đậm đà nhất.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="p-6 bg-green-50 rounded-[35px] flex gap-6 items-center">
+                            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-green-700 shadow-sm flex-shrink-0">
+                                <i class="fas fa-sun text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 italic">Độ chín tự nhiên 100%</h4>
+                                <p class="text-xs text-gray-500 mt-1 leading-relaxed text-justify">Chúng tôi để trái cây tự tích tụ dưỡng chất dưới ánh mặt trời cho đến khi đạt độ chín hoàn hảo nhất mới tiến hành thu hoạch.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 bg-green-50 rounded-[35px] flex gap-6 items-center">
+                            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-green-700 shadow-sm flex-shrink-0">
+                                <i class="fas fa-snowflake text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 italic">Bảo quản lạnh tiên tiến</h4>
+                                <p class="text-xs text-gray-500 mt-1 leading-relaxed text-justify">Trái cây sau thu hoạch được đưa ngay vào quy trình làm lạnh sâu để tạm dừng quá trình oxy hóa, giữ được Vitamin tối đa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER (GIỮ NGUYÊN CONTAINER) -->
+    <div id="footer-container"></div>
+
+    <script src="../../assets/js/main.js"></script>
+</body>
+</html>

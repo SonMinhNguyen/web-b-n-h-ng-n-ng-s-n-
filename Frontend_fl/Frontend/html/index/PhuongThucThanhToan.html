@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fresh Mart - Phương thức thanh toán</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../../assets/css/globals.css">
+<link rel="stylesheet" href="../../assets/css/CheckOut.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .product-card { background-color: #ffffff; transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .category-item-active {
+            color: #16a34a;
+            font-weight: 900;
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+        }
+        
+        #search-input::placeholder {
+    font-size: 13px; /* Bạn có thể chỉnh số này nhỏ xuống (ví dụ: 12px, 11px) */
+    opacity: 0.8;    /* Làm mờ đi một chút nếu muốn */
+}
+    </style>
+</head>
+<body class="bg-slate-50">
+
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]"
+                style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="../html_main/trang_chu.html">Fresh Mart</a>
+            </h1>
+            
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" text-[16px] id="search-input" oninput="filterProducts()" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4" style="margin-left: -6cm;">
+                <a href="../html_main/gio_hang.html" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                    <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+                </a>
+
+                <button class="bg-[#f6f7ef] px-6 py-2 rounded-3xl text-[14px] font-semibold text-[#456b3f] hover:bg-white transition">
+                    <a href="../html_person/ho_so.html" class="inline-flex items-center">
+                        Ánh Tuyết
+                    </a>
+                </button>
+
+            <div class="relative inline-block text-left" id="avatar-dropdown-wrapper">
+                <img src="https://i.pravatar.cc/120?img=32" alt="avatar" 
+                    onclick="toggleUserDropdown(event)" 
+                    class="w-[50px] h-[50px] rounded-full object-cover border-2 border-green-200 hover:border-green-500 cursor-pointer transition-all">
+                
+                <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[100]">
+                    <a href="../html_person/ho_so.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Hồ sơ cá nhân
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_person/trang_don_mua.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Đơn mua
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_login_register/dang_nhap.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                    <button onclick="handleUserLogout()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition">
+                        <i class="fas fa-sign-out-alt text-xs w-4"></i> Đăng xuất
+                    </button></a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+        <nav class="bg-[#ffffff]  border-white">
+            <div class="max-w-[1920px] mx-auto px-16">
+                <ul class="flex items-center justify-between h-[35px]">
+                    <li><a href="../html_main/trang_chu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Trang chủ</a></li>
+                    <li><a href="../html_main/trang_gioi_thieu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Giới thiệu</a></li>
+                    <li><a href="../html_main/trang_san_pham.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Sản phẩm</a></li>
+                    <li><a href="../html_main/trang_cau_hoi.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Câu hỏi</a></li>
+                    <li><a href="../html_main/trang_tin_tuc.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Tin tức</a></li>
+                    <li><a href="../html_main/trang_lien_he.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Liên hệ</a></li>
+                </ul>
+            </div>
+        </nav>
+</header>
+
+
+
+
+<div class="steps-bar">
+  <div class="step done"><span class="step-num">1</span><span class="step-label">Thông tin giao hàng</span></div>
+  <div class="step-line filled"></div>
+  <div class="step active"><span class="step-num">2</span><span class="step-label">Thanh toán</span></div>
+  <div class="step-line"></div>
+  <div class="step"><span class="step-num">3</span><span class="step-label">Hoàn tất</span></div>
+</div>
+
+<div class="checkout-layout">
+  <div class="checkout-left">
+    <div class="payment-methods">
+      <div class="payment-option" id="opt-cod" onclick="selectMethod('cod')">
+        <div class="radio-circle" id="radio-cod"></div>
+        <div class="payment-info">
+          <p class="pay-title">Thanh toán khi nhận hàng (COD)</p>
+          <p class="pay-desc">Thanh toán bằng tiền mặt khi nhận hàng</p>
+        </div>
+      </div>
+      <div class="payment-option" id="opt-qr" onclick="selectMethod('qr')">
+        <div class="radio-circle" id="radio-qr"></div>
+        <div class="payment-info">
+          <p class="pay-title">Chuyển khoản ngân hàng (Mã QR)</p>
+          <p class="pay-desc">Chuyển khoản đến tài khoản ngân hàng</p>
+        </div>
+      </div>
+      <div class="payment-option" id="opt-wallet" onclick="selectMethod('wallet')">
+        <div class="radio-circle" id="radio-wallet"></div>
+        <div class="payment-info">
+          <p class="pay-title">Trả bằng ví điện tử(ZaloPay,...)</p>
+          <p class="pay-desc">Thanh toán bằng các ví</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hint-box" id="hintBox" style="display:none">
+      Hãy chọn phương thức thanh toán để tiếp tục
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="window.location.href='DienThongTin.html'">Quay lại ←</button>
+      <button class="btn-next disabled" id="btnNext" onclick="goNext()">Tiếp tục →</button>
+    </div>
+  </div>
+
+  <div class="checkout-right">
+    <h3 class="order-title">Đơn hàng của bạn</h3>
+    <div class="order-items">
+      <div class="order-item">
+        <img src="../img/bia.png" alt="">
+        <div class="order-item-info">
+          <p class="item-name">[Thùng] Bia Tiger Lon 330ml x 20 Lon</p>
+          <p class="item-qty">Số lượng: 1</p>
+        </div>
+      </div>
+      <div class="order-item">
+        <img src="../img/bingoi.png" alt="">
+        <div class="order-item-info">
+          <p class="item-name">Bí Ngòi Xanh Đà Lạt</p>
+          <p class="item-qty">Số lượng: 3</p>
+        </div>
+      </div>
+      <div class="order-item">
+        <img src="../img/canhga.png" alt="">
+        <div class="order-item-info">
+          <p class="item-name">Cánh Gà Đông Lạnh CP Gói 1kg</p>
+          <p class="item-qty">Số lượng: 1</p>
+        </div>
+      </div>
+      <div class="order-item">
+        <img src="../img/bachibo.png" alt="">
+        <div class="order-item-info">
+          <p class="item-name">Ba Chỉ Bò Mỹ Đông Lạnh T&P 500g</p>
+          <p class="item-qty">Số lượng: 2</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-summary" id="summaryBlock"></div>
+  </div>
+</div>
+
+<footer class="bg-[#88d696] text-[#2f4f2f] py-16">
+    <div class="max-w-8xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+            <!-- Cột 1: Thương hiệu - Giữ nguyên vị trí bên trái -->
+            <div class="flex flex-col items-start"
+                 style="margin-left: 1cm;">
+                <h2 class="text-4xl font-bold italic tracking-tight" style="font-family: 'Georgia', serif;">Fresh Mart</h2>
+                <div class="w-full border-t border-[#2f4f2f]/30 pt-3">
+                    
+            <p class="text-sm font-semibold uppercase tracking-wider ">
+                Xanh từ nguồn - Sạch đến bàn ăn
+            </p>
+                </div>
+            </div>
+
+
+            <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-12 md:pl-[113px]">
+                
+                <!-- Cột 2: Hỗ trợ -->
+                <div class="flex flex-col items-start">
+                    <h3 class="text-lg font-bold mb-6 uppercase tracking-widest border-b-2 border-[#2f4f2f]/20 pb-1 text-nowrap">Hỗ trợ</h3>
+                    <ul class="space-y-3 text-sm font-medium">
+                        <li><a href="#" class="hover:translate-x-1 inline-block transition-transform duration-200">Phương thức thanh toán</a></li>
+                        <li><a href="#" class="hover:translate-x-1 inline-block transition-transform duration-200">Chính sách giao hàng</a></li>
+                        <li><a href="#" class="hover:translate-x-1 inline-block transition-transform duration-200">Chính sách đổi trả</a></li>
+                        <li><a href="#" class="hover:translate-x-1 inline-block transition-transform duration-200">Phản ánh chất lượng</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3: Liên hệ -->
+                <div class="flex flex-col items-start">
+                    <h3 class="text-lg font-bold mb-6 uppercase tracking-widest border-b-2 border-[#2f4f2f]/20 pb-1 text-nowrap">Liên hệ</h3>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-envelope mt-1 text-base"></i>
+                            <a href="mailto:support@freshmart.com" class="hover:text-white transition-colors break-all">support@freshmart.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone-alt text-base"></i>
+                            <span class="font-bold text-lg tracking-wider text-nowrap">1900 1234</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Cột 4: Kết nối -->
+                <div class="flex flex-col items-start">
+                    <h3 class="text-lg font-bold mb-6 uppercase tracking-widest border-b-2 border-[#2f4f2f]/20 pb-1 text-nowrap">Kết nối</h3>
+                    <div class="flex gap-4">
+                        <a href="#" class="bg-[#2f4f2f] text-[#88d696] w-11 h-11 rounded-full flex items-center justify-center hover:bg-white hover:text-[#2f4f2f] transition-all duration-300 shadow-md transform hover:-translate-y-1">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="bg-[#2f4f2f] text-[#88d696] w-11 h-11 rounded-full flex items-center justify-center hover:bg-white hover:text-[#2f4f2f] transition-all duration-300 shadow-md transform hover:-translate-y-1">
+                            <i class="fab fa-tiktok text-xl"></i>
+                        </a>
+                        <a href="#" class="bg-[#2f4f2f] text-[#88d696] w-11 h-11 rounded-full flex items-center justify-center hover:bg-white hover:text-[#2f4f2f] transition-all duration-300 shadow-md transform hover:-translate-y-1">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Dòng bản quyền -->
+        <div class="mt-16 pt-8 border-t border-[#2f4f2f]/10 text-center">
+            <p class="text-xs font-medium opacity-60 uppercase tracking-widest">
+                &copy; 2026 Fresh Mart Green Life. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+const VALID_VOUCHERS = {
+  'VC30K':    { discount: 30000, label: '30.000đ' },
+  'SUMMER20': { discount: 34000, label: '20%' },
+  'FRESH50K': { discount: 50000, label: '50.000đ' },
+};
+
+// ĐỔI THÀNH BIẾN ĐỘNG TỰ ĐỘNG TÍNH TOÁN
+let BASE_PRICE = 0;
+let appliedDiscount = 0;
+let orderItems = [];
+
+// Hàm tự động bóc tách dữ liệu từ luồng tương tác người dùng
+function loadCheckoutSummary() {
+  const type = sessionStorage.getItem('checkout_type');
+  const rawData = sessionStorage.getItem('checkout_data');
+
+  if (rawData) {
+      orderItems = JSON.parse(rawData);
+  } else {
+      // Trường hợp dự phòng nếu vào trực tiếp trang thông tin mà chưa qua giỏ hàng
+      orderItems = [
+          { id: "SP-001", name: "Cà chua Beef hữu cơ Đà Lạt", price: 60000, quantity: 1, image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=400", unit: "Túi 1KG" }
+      ];
+  }
+
+  // Tính tổng giá trị đơn hàng thực tế
+  BASE_PRICE = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  // Render danh sách sản phẩm sang vế phải giao diện
+  const itemsContainer = document.querySelector('.order-items');
+  if (itemsContainer) {
+      itemsContainer.innerHTML = '';
+      orderItems.forEach(item => {
+          itemsContainer.insertAdjacentHTML('beforeend', `
+              <div class="order-item">
+                <img src="${item.image}" alt="${item.name}">
+                <div class="order-item-info">
+                  <p class="item-name">${item.name} (${item.unit || 'Hộp'})</p>
+                  <p class="item-qty">Số lượng: ${item.quantity} — <span class="text-green-700 font-bold">${(item.price * item.quantity).toLocaleString('vi-VN')}đ</span></p>
+                </div>
+              </div>
+          `);
+      });
+  }
+
+  // Cập nhật số tiền hiển thị ban đầu
+  const summaryRows = document.querySelectorAll('.summary-row');
+  if (summaryRows.length > 0) {
+      summaryRows[0].innerHTML = `<span>Tạm tính (${orderItems.length} mặt hàng)</span><span>${BASE_PRICE.toLocaleString('vi-VN')}đ</span>`;
+  }
+  
+  document.getElementById('totalAmt').innerText = BASE_PRICE.toLocaleString('vi-VN') + 'đ';
+}
+
+function checkForm() {
+  const fields = ['fullname','phone','email','address','province','district','ward'];
+  const filled = fields.every(id => document.getElementById(id).value.trim() !== '');
+  const btn = document.getElementById('btnNext');
+  if(btn) {
+      btn.classList.toggle('disabled', !filled);
+      btn.classList.toggle('active', filled);
+  }
+}
+
+function applyVoucher() {
+  const code = document.getElementById('voucherInput').value.trim().toUpperCase();
+  const msg  = document.getElementById('voucherMsg');
+  const discountRow = document.getElementById('discountRow');
+  const discountAmt = document.getElementById('discountAmt');
+  const totalAmt    = document.getElementById('totalAmt');
+
+  if (!code) return;
+
+  if (VALID_VOUCHERS[code]) {
+    const v = VALID_VOUCHERS[code];
+    appliedDiscount = v.discount;
+    const total = BASE_PRICE - appliedDiscount;
+    msg.textContent = '✓ Áp dụng thành công!';
+    msg.className = 'voucher-msg success';
+    discountRow.style.display = 'flex';
+    discountAmt.textContent = '-' + v.label;
+    totalAmt.textContent = (total < 0 ? 0 : total).toLocaleString('vi-VN') + 'đ';
+    
+    sessionStorage.setItem('voucher', code);
+    sessionStorage.setItem('discount', appliedDiscount);
+    sessionStorage.setItem('total', total < 0 ? 0 : total);
+  } else {
+    msg.textContent = '✗ Mã không tồn tại hoặc đã hết hạn';
+    msg.className = 'voucher-msg error';
+    appliedDiscount = 0;
+    discountRow.style.display = 'none';
+    totalAmt.textContent = BASE_PRICE.toLocaleString('vi-VN') + 'đ';
+    sessionStorage.removeItem('voucher');
+    sessionStorage.removeItem('discount');
+    sessionStorage.setItem('total', BASE_PRICE);
+  }
+}
+
+function resetVoucher() {
+  document.getElementById('voucherMsg').textContent = '';
+}
+
+function goNext() {
+  const btn = document.getElementById('btnNext');
+  if (btn.classList.contains('disabled')) return;
+  
+  sessionStorage.setItem('fullname', document.getElementById('fullname').value);
+  sessionStorage.setItem('phone',    document.getElementById('phone').value);
+  if (!sessionStorage.getItem('total')) sessionStorage.setItem('total', BASE_PRICE);
+  window.location.href = 'PhuongThucThanhToan.html';
+}
+
+// Gọi khởi chạy render tóm tắt khi tải trang
+document.addEventListener('DOMContentLoaded', () => {
+    loadCheckoutSummary();
+    buildSummary();
+});
+</script>
+
+<script>
+let selectedMethod = '';
+
+function buildSummary() {
+
+  const discount = parseInt(sessionStorage.getItem('discount') || '0');
+  const voucher  = sessionStorage.getItem('voucher') || '';
+  const total    = parseInt(sessionStorage.getItem('total') || BASE_PRICE);
+
+  let html = `
+    <div class="summary-row">
+      <span>Tạm tính (${orderItems.length} mặt hàng)</span>
+      <span>${BASE_PRICE.toLocaleString('vi-VN')}đ</span>
+    </div>
+
+    <div class="summary-row">
+      <span>Phí vận chuyển</span>
+      <span class="green">Miễn phí</span>
+    </div>
+  `;
+
+  // Nếu có giảm giá mới hiển thị
+  if (discount > 0) {
+    html += `
+      <div class="summary-row">
+        <span>Giảm giá</span>
+        <span class="green">-${discount.toLocaleString('vi-VN')}đ</span>
+      </div>
+    `;
+  }
+
+  html += `
+    <div class="voucher-row">
+      <span class="label-voucher">Mã giảm giá</span>
+
+      <div class="voucher-input-wrap">
+        <input 
+          type="text" 
+          value="${voucher || 'Chưa áp dụng'}"
+          readonly
+          style="
+            background:${voucher ? '#4CAF50' : '#f1f5f9'};
+            color:${voucher ? '#fff' : '#64748b'};
+            font-weight:700;
+          "
+        >
+      </div>
+    </div>
+
+    <div class="summary-total">
+      <span>Tổng</span>
+      <span>${total.toLocaleString('vi-VN')}đ</span>
+    </div>
+  `;
+
+  document.getElementById('summaryBlock').innerHTML = html;
+}
+
+function selectMethod(method) {
+  selectedMethod = method;
+  ['cod','qr','wallet'].forEach(m => {
+    document.getElementById('opt-' + m).classList.remove('selected');
+    document.getElementById('radio-' + m).classList.remove('checked');
+  });
+  document.getElementById('opt-'   + method).classList.add('selected');
+  document.getElementById('radio-' + method).classList.add('checked');
+
+  const btn = document.getElementById('btnNext');
+  btn.classList.remove('disabled');
+  btn.classList.add('active');
+  document.getElementById('hintBox').style.display = 'none';
+  sessionStorage.setItem('payMethod', method);
+}
+
+function goNext() {
+  if (!selectedMethod) {
+    document.getElementById('hintBox').style.display = 'block';
+    return;
+  }
+  if (selectedMethod === 'cod')    window.location.href = 'HoanTatThanhToan.html';
+  if (selectedMethod === 'qr')     window.location.href = 'MaQR.html';
+  if (selectedMethod === 'wallet') window.location.href = 'ViDienTu.html';
+}
+
+buildSummary();
+</script>
+</body>
+</html>

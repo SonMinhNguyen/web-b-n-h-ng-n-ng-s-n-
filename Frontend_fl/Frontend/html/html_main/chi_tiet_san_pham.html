@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Chi tiết sản phẩm | Fresh Mart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .product-card { background-color: #ffffff; transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .rating-box { border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 16px; text-align: center; min-width: 80px; transition: all 0.2s; }
+        .rating-box:hover { border-color: #16a34a; background-color: #f0fdf4; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        #search-input::placeholder { font-size: 13px; opacity: 0.8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]"
+                style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="trang_chu.html">Fresh Mart</a>
+            </h1>
+            
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" id="search-input" oninput="filterProducts()" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white text-[13px]">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+        <div class="flex items-center gap-4" style="margin-left: -6cm;">
+            <a href="gio_hang.html" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+            </a>
+
+            <button class="bg-[#f6f7ef] px-6 py-2 rounded-3xl text-[14px] font-semibold text-[#456b3f] hover:bg-white transition">
+                <a href="../html_person/ho_so.html" class="inline-flex items-center">
+                    Ánh Tuyết
+                </a>
+            </button>
+
+            <div class="relative inline-block text-left" id="avatar-dropdown-wrapper">
+                <img src="https://i.pravatar.cc/120?img=32" alt="avatar" 
+                    onclick="toggleUserDropdown(event)" 
+                    class="w-[50px] h-[50px] rounded-full object-cover border-2 border-green-200 hover:border-green-500 cursor-pointer transition-all">
+                
+                <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[100]">
+                    <a href="../html_person/ho_so.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Hồ sơ cá nhân
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_person/trang_don_mua.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                        <i class="far fa-user text-xs w-4"></i> Đơn mua
+                    </a>
+                    <hr class="border-slate-100 my-1">
+                    <a href="../html_login_register/dang_nhap.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                    <button onclick="handleUserLogout()" class="w-full text-left flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition">
+                        <i class="fas fa-sign-out-alt text-xs w-4"></i> Đăng xuất
+                    </button></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <nav class="bg-[#ffffff] border-white">
+        <div class="max-w-[1920px] mx-auto px-16">
+            <ul class="flex items-center justify-between h-[35px]">
+                <li><a href="trang_chu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Trang chủ</a></li>
+                <li><a href="trang_gioi_thieu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Giới thiệu</a></li>
+                <li><a href="trang_san_pham.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Sản phẩm</a></li>
+                <li><a href="trang_cau_hoi.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Câu hỏi</a></li>
+                <li><a href="trang_tin_tuc.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Tin tức</a></li>
+                <li><a href="trang_lien_he.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Liên hệ</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="max-w-7xl mx-auto px-4 pt-6 text-xs text-slate-400 font-semibold flex items-center gap-2">
+    <a href="trang_chu.html" class="hover:text-green-600">Fresh Mart</a> <span>/</span>
+    <a href="trang_san_pham.html" id="breadcrumb-category" class="hover:text-green-600">Danh mục</a> <span>/</span>
+    <span id="breadcrumb-title" class="text-slate-600">Sản phẩm</span>
+</div>
+
+<main class="max-w-7xl mx-auto px-4 py-8">
+    <section class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-12 items-start mb-8">
+        
+        <div class="space-y-4 w-full flex flex-col items-center">
+            <div class="w-full max-w-[450px] aspect-square bg-slate-50 rounded-2xl p-4 border border-slate-100 shadow-inner flex items-center justify-center overflow-hidden">
+                <img id="main-product-img" src="" class="max-h-full max-w-full object-contain rounded-xl transition-all duration-300" alt="Sản phẩm">
+            </div>
+            <div class="flex gap-3 justify-center overflow-x-auto py-1 no-scrollbar w-full" id="thumbnail-container"></div>
+        </div>
+
+        <div class="space-y-6">
+            <div>
+                <span class="text-green-600 font-bold uppercase text-xs tracking-wider mb-1 block"><i class="fas fa-shield-alt"></i> Thực phẩm kiểm định an toàn</span>
+                <h1 id="product-title" class="text-3xl font-black text-slate-800 tracking-tight uppercase">Tên sản phẩm</h1>
+                
+                <div class="flex items-center gap-3 mt-3">
+                    <div class="text-yellow-400 text-sm flex gap-0.5">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="text-xs font-bold text-slate-400 border-l border-slate-200 pl-3">Đã bán 1.2k</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex items-center justify-between gap-3">
+                <span id="product-price" class="text-3xl font-black text-[#2f6b2f] tracking-tight">0đ</span>
+                <span id="db-unit" class="text-xs font-bold bg-green-100 text-green-700 px-3 py-1 rounded-full uppercase">Đơn vị</span>
+            </div>
+
+            <div class="space-y-2 text-sm leading-relaxed text-slate-600">
+                <p id="product-short-desc" class="italic text-slate-500">Đang tải mô tả ngắn nông sản sạch...</p>
+                <ul class="grid grid-cols-2 gap-x-4 gap-y-2 pt-3 text-xs font-medium text-slate-500 border-t border-dashed border-slate-200">
+                    <li><i class="fas fa-map-marker-alt text-green-500 mr-1"></i> Nguồn gốc: <span id="db-source" class="font-bold text-slate-700">Đang kiểm tra</span></li>
+                    <li><i class="fas fa-check text-green-500 mr-1"></i> Quy cách: <span id="product-unit" class="font-bold text-slate-700">Đóng gói chuẩn sạch</span></li>
+                    <li><i class="fas fa-history text-green-500 mr-1"></i> Hạn dùng: <span class="font-bold text-slate-700">3-5 ngày</span></li>
+                    <li><i class="fas fa-temperature-low text-green-500 mr-1"></i> Bảo quản: <span class="font-bold text-slate-700">Tủ mát (4-8°C)</span></li>
+                </ul>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 space-y-4">
+                <div class="flex items-center gap-4">
+                    <span class="text-sm font-bold text-slate-700">Số lượng:</span>
+                    <div class="flex items-center bg-slate-100 rounded-xl p-0.5 border border-slate-200">
+                        <button onclick="changeQuantity(-1)" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-green-600 transition-colors"><i class="fas fa-minus text-xs"></i></button>
+                        <input type="text" id="quantity-input" value="1" class="w-10 text-center font-bold text-slate-700 text-sm bg-transparent outline-none border-none">
+                        <button onclick="changeQuantity(1)" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-green-600 transition-colors"><i class="fas fa-plus text-xs"></i></button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button onclick="addToCart()" class="flex-1 border-2 border-2 border-[#2f6b2f] text-[#2f6b2f] hover:bg-green-50 py-4 rounded-xl font-bold text-sm uppercase tracking-wider transition-all active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-shopping-basket"></i> Thêm vào giỏ hàng
+                    </button>
+                    <button onclick="buyNow()" class="flex-1 bg-[#2f6b2f] hover:bg-[#1f491f] text-white py-4 rounded-xl font-bold text-sm uppercase tracking-wider shadow-lg shadow-green-100 transition-all active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-bolt"></i> Mua ngay
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 mb-8">
+        <div class="flex border-b border-slate-200 mb-6 gap-6">
+            <button class="border-b-2 border-green-600 pb-3 font-bold text-sm text-green-700 tracking-wide uppercase">
+                Mô tả chi tiết sản phẩm
+            </button>
+        </div>
+        <div class="prose max-w-none text-sm text-slate-600 leading-relaxed space-y-4">
+            <p id="product-full-desc">Sản phẩm đang được đồng bộ thông tin chi tiết dài...</p>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 mt-4">
+                <h4 class="font-bold text-slate-800 mb-3 text-xs uppercase tracking-wider"><i class="fas fa-info-circle text-green-600 mr-1"></i> Giá trị cốt lõi từ Fresh Mart</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><strong class="text-slate-700">✔ Không hóa chất:</strong> Cam kết hoàn toàn không dư lượng thuốc bảo vệ thực vật, không chất kích thích tăng trưởng độc hại.</li>
+                    <li><strong class="text-slate-700">✔ Tươi sạch mỗi ngày:</strong> Nông sản được kiểm định chất lượng đầu vào nghiêm ngặt trước khi đóng gói khay tiện lợi.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 mb-12">
+        <h2 class="text-lg font-bold text-slate-800 mb-6 uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-slate-100">
+            <i class="fas fa-comments text-green-600"></i> Đánh giá từ khách hàng
+        </h2>
+        <div class="flex flex-col md:flex-row items-center gap-8 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+            <div class="text-center md:border-r md:border-slate-200 md:pr-10 shrink-0">
+                <div class="text-4xl font-black text-slate-800">4.8 <span class="text-base text-slate-400 font-medium">/ 5</span></div>
+                <div class="text-yellow-400 my-1.5 text-sm flex gap-0.5 justify-center">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+                <span class="text-xs text-slate-400 font-medium">(520 nhận xét)</span>
+            </div>
+            <div class="flex-1 flex flex-wrap gap-2.5 items-center justify-center md:justify-start w-full">
+                <div class="rating-box bg-green-50 text-green-700 font-bold text-xs border-green-200 cursor-pointer">Tất cả (520)</div>
+                <div class="rating-box text-xs font-semibold text-slate-500 bg-white cursor-pointer hover:bg-slate-50">5 sao (510)</div>
+                <div class="rating-box text-xs font-semibold text-slate-500 bg-white cursor-pointer hover:bg-slate-50">4 sao (10)</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <div class="flex items-center justify-between mb-8 border-b pb-4 border-slate-200/60">
+            <h2 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Sản phẩm tương tự tuần này</h2>
+            <span class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-xl border border-green-100 uppercase tracking-wider"><i class="fas fa-fire"></i> Giá siêu tốt</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 relative" id="related-products-container"></div>
+    </section>
+</main>
+
+<div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 z-[200] pointer-events-none text-sm font-medium">
+    <span id="toast-message"></span>
+</div>
+
+<div id="footer-container"></div>
+
+<script>
+    // Hàm bổ trợ tăng giảm số lượng nút bấm cục bộ ăn khớp với main.js
+    function changeQuantity(val) {
+        const input = document.getElementById('quantity-input');
+        if (!input) return;
+        let currentQty = parseInt(input.value) || 1;
+        currentQty += val;
+        if (currentQty < 1) currentQty = 1;
+        input.value = currentQty;
+    }
+
+  // Thay đổi nội dung hàm addToCart và buyNow nội bộ để kích hoạt hàm global trong main.js
+    function addToCart() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id') || 'SP-001';
+        const qty = parseInt(document.getElementById('quantity-input').value) || 1;
+        
+        // Gọi hàm xử lý lưu localStorage toàn cục trong main.js
+        globalAddToCart(productId, qty);
+    }
+
+    function buyNow() {
+        // Gọi hàm chuyển hướng cấp tốc mua ngay trong main.js
+        globalBuyNow();
+    }
+</script>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

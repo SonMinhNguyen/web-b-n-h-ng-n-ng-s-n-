@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tin tức | Fresh Mart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .product-card { background-color: #ffffff; transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .category-item-active {
+            color: #16a34a;
+            font-weight: 900;
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+        }
+        #search-input::placeholder {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+<header class="bg-[#DCEBCF] border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+            
+            <h1 class="text-[40px] leading-none font-bold italic text-[#2f6b2f]" style="font-family: 'Georgia', serif; margin-left: -2cm;">
+                <a href="index.html">Fresh Mart</a>
+            </h1>
+            
+            <div class="flex-1 max-w-2xl mx-8" style="margin-left: -7cm;">
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm trong Fresh Mart" 
+                           class="w-full py-3 px-5 rounded-full border border-green-200 focus:outline-none focus:border-green-500 bg-white text-[13px]">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-green-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4" style="margin-left: -6cm;">
+                <a href="gio_hang.html" id="cart-icon" class="relative p-3 hover:bg-green-100 rounded-full inline-flex items-center" style="margin-left: -3cm;">
+                    <i class="fas fa-shopping-cart text-3xl text-green-700"></i>
+                </a>
+                <a href="dang_ky.html" class="border border-green-700 bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 min-w-[140px] text-center text-sm font-bold shadow-sm">Đăng ký</a>
+                <a href="dang_nhap.html" class="border border-green-700 text-green-700 px-6 py-2 rounded-lg hover:bg-green-50 min-w-[140px] text-center text-sm font-bold bg-white shadow-sm">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bg-[#ffffff] border-white">
+        <div class="max-w-[1920px] mx-auto px-16">
+            <ul class="flex items-center justify-between h-[35px]">
+                <li><a href="index.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Trang chủ</a></li>
+                <li><a href="gioi_thieu.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Giới thiệu</a></li>
+                <li><a href="san_pham.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Sản phẩm</a></li>
+                <li><a href="cau_hoi.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Câu hỏi</a></li>
+                <li><a href="tin_tuc.html" class="text-[14px] font-semibold text-green-700 hover:text-green-700 transition">Tin tức</a></li>
+                <li><a href="lien_he.html" class="text-[14px] font-semibold text-black hover:text-green-700 transition">Liên hệ</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main class="content-body py-20 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4">
+            
+            <div class="text-center mb-16">
+                <span class="text-green-600 font-bold tracking-[0.3em] uppercase text-xs mb-3 block">Bản tin Fresh Mart</span>
+                <h2 class="text-4xl font-black text-[#2f6b2f] mb-6 tracking-tight uppercase">Cẩm nang sống xanh</h2>
+                <div class="w-20 h-1 bg-green-500 mx-auto rounded-full"></div>
+            </div>
+
+            <section class="relative rounded-[50px] overflow-hidden mb-20 group cursor-pointer shadow-2xl">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                
+                <div class="relative p-8 md:p-16 flex flex-col justify-end min-h-[500px]">
+                    <span class="bg-green-600 text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase w-fit mb-4">Tin nổi bật</span>
+                    <h3 class="text-white text-3xl md:text-4xl font-bold mb-4 max-w-2xl leading-tight">
+                        Hành trình từ nông trại đến bàn ăn: Quy trình kiểm soát chất lượng gắt gao tại Fresh Mart
+                    </h3>
+                    <p class="text-white/80 text-sm md:text-base max-w-xl mb-6 line-clamp-2">
+                        Khám phá cách Fresh Mart phối hợp cùng các nông trại organic để mang lại những nhành rau xanh mướt, không hóa chất cho gia đình bạn.
+                    </p>
+                    <div class="flex items-center gap-4 text-white/60 text-xs">
+                        <span><i class="far fa-calendar-alt mr-2"></i> 14/05/2026</span>
+                        <span><i class="far fa-eye mr-2"></i> 1,250 lượt xem</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
+                
+                <article class="group">
+                    <div class="relative rounded-[35px] overflow-hidden mb-6 shadow-lg h-64">
+                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000" alt="Salad" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-green-700 uppercase">Mẹo hay</div>
+                    </div>
+                    <div class="px-2">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors line-clamp-2">
+                            5 công thức Salad giải nhiệt cực đỉnh cho những ngày hè nắng nóng
+                        </h4>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">
+                            Tận dụng nguồn rau củ tươi ngon sẵn có tại Fresh Mart để biến tấu những món ăn vừa khỏe vừa đẹp da ngay tại bếp nhà.
+                        </p>
+                        <a href="#" class="text-xs font-black uppercase tracking-widest text-green-600 flex items-center gap-2 group-hover:gap-4 transition-all">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="group">
+                    <div class="relative rounded-[35px] overflow-hidden mb-6 shadow-lg h-64">
+                        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1000" alt="Vegetables storage" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-green-700 uppercase">Kiến thức</div>
+                    </div>
+                    <div class="px-2">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors line-clamp-2">
+                            Bí quyết bảo quản rau củ tươi lâu trong tủ lạnh mà vẫn giữ trọn Vitamin
+                        </h4>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">
+                            Không phải loại rau nào cũng cần rửa trước khi cất. Hãy cùng chuyên gia Fresh Mart tìm hiểu cách lưu trữ thực phẩm khoa học nhất.
+                        </p>
+                        <a href="#" class="text-xs font-black uppercase tracking-widest text-green-600 flex items-center gap-2 group-hover:gap-4 transition-all">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="group">
+                    <div class="relative rounded-[35px] overflow-hidden mb-6 shadow-lg h-64">
+                        <img src="https://images.unsplash.com/photo-1590779033100-9f60a05a013d?q=80&w=1000" alt="Nuts and seeds" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-green-700 uppercase">Sức khỏe</div>
+                    </div>
+                    <div class="px-2">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors line-clamp-2">
+                            Hạt dinh dưỡng: Lựa chọn vàng cho chế độ ăn lành mạnh mỗi ngày
+                        </h4>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">
+                            Tại sao Hạnh nhân và Óc chó lại được mệnh danh là "siêu thực phẩm"? Khám phá những lợi ích tuyệt vời cho tim mạch.
+                        </p>
+                        <a href="#" class="text-xs font-black uppercase tracking-widest text-green-600 flex items-center gap-2 group-hover:gap-4 transition-all">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="group">
+                    <div class="relative rounded-[35px] overflow-hidden mb-6 shadow-lg h-64">
+                        <img src="https://wwin.vn/wp-content/uploads/2019/12/tieu-chuan-globalgap.jpg" alt="Quality Control" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-green-700 uppercase">Quy trình</div>
+                    </div>
+                    <div class="px-2">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors line-clamp-2">
+                            Tiêu chuẩn GlobalGAP: Tấm hộ chiếu cho nông sản sạch tại Fresh Mart
+                        </h4>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">
+                            Tìm hiểu về các tiêu chí khắt khe mà mỗi trang trại đối tác phải vượt qua để có mặt trên kệ hàng của chúng tôi.
+                        </p>
+                        <a href="#" class="text-xs font-black uppercase tracking-widest text-green-600 flex items-center gap-2 group-hover:gap-4 transition-all">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="group">
+                    <div class="relative rounded-[35px] overflow-hidden mb-6 shadow-lg h-64">
+                        <img src="https://bloganchoi.com/wp-content/uploads/2018/08/sai-lam-khi-an-trai-cay-13.jpg" alt="Seasonal Fruits" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-green-700 uppercase">Mùa vụ</div>
+                    </div>
+                    <div class="px-2">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors line-clamp-2">
+                            Top 5 loại trái cây giải nhiệt đang vào mùa thu hoạch chính tháng 5
+                        </h4>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">
+                            Cùng Fresh Mart điểm danh những loại quả mọng nước, thơm ngon nhất hiện nay để bổ sung Vitamin cho cả gia đình.
+                        </p>
+                        <a href="#" class="text-xs font-black uppercase tracking-widest text-green-600 flex items-center gap-2 group-hover:gap-4 transition-all">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="group">
+                    <div class="relative rounded-[35px] overflow-hidden mb-6 shadow-lg h-64">
+                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000" alt="Sustainable" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-green-700 uppercase">Sống xanh</div>
+                    </div>
+                    <div class="px-2">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors line-clamp-2">
+                            Fresh Mart tiến tới mục tiêu "Zero Waste" với bao bì sinh học tự phân hủy
+                        </h4>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">
+                            Cam kết giảm thiểu túi nilon và thay thế bằng lá chuối, túi tinh bột ngô để bảo vệ môi trường xanh bền vững.
+                        </p>
+                        <a href="#" class="text-xs font-black uppercase tracking-widest text-green-600 flex items-center gap-2 group-hover:gap-4 transition-all">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+
+            <section class="bg-green-50 rounded-[50px] p-8 md:p-16 flex flex-col md:flex-row items-center gap-8 shadow-sm">
+                <div class="flex-1 space-y-4">
+                    <h3 class="text-2xl font-bold text-gray-800 uppercase">Đừng bỏ lỡ ưu đãi nào!</h3>
+                    <p class="text-sm text-gray-500">Đăng ký nhận bản tin để nhận ngay cẩm nang sống khỏe và các chương trình khuyến mãi sớm nhất từ Fresh Mart.</p>
+                </div>
+                <form id="newsletter-form" class="flex-1 w-full flex items-center bg-white rounded-full p-2 shadow-inner">
+                    <input type="email" placeholder="Nhập địa chỉ email của bạn" required class="flex-grow bg-transparent px-6 py-2 outline-none text-sm italic">
+                    <button type="submit" class="bg-green-600 text-white px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-green-700 transition-all">Gửi ngay</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+<footer class="bg-[#88d696] text-[#2f4f2f] py-16">
+    <div class="max-w-8xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+            <!-- Cột 1: Thương hiệu - Giữ nguyên vị trí bên trái -->
+            <div class="flex flex-col items-start"
+                 style="margin-left: 1.5cm;">
+                <h2 class="text-4xl font-bold italic tracking-tight" style="font-family: 'Georgia', serif;">Fresh Mart</h2>
+                <div class="w-full border-t border-[#2f4f2f]/30 pt-3">
+                    
+            <p class="text-sm font-semibold uppercase tracking-wider ">
+                Xanh từ nguồn - Sạch đến bàn ăn
+            </p>
+                </div>
+            </div>
+
+
+            <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-12 md:pl-[113px]">
+                
+                <!-- Cột 2: Hỗ trợ -->
+                <div class="flex flex-col items-start">
+                    <h3 class="text-lg font-bold mb-6 uppercase tracking-widest border-b-2 border-[#2f4f2f]/20 pb-1 text-nowrap">Hỗ trợ</h3>
+                    <ul class="space-y-3 text-sm font-medium">
+                        <li><a href="#" class="hover:translate-x-1 inline-block transition-transform duration-200">Phương thức thanh toán</a></li>
+                        <li><a href="#" class="hover:translate-x-1 inline-block transition-transform duration-200">Chính sách giao hàng</a></li>
+                        <li><a href="#" class="hover:translate-x-1 inline-block transition-transform duration-200">Chính sách đổi trả</a></li>
+                        <li><a href="#" class="hover:translate-x-1 inline-block transition-transform duration-200">Phản ánh chất lượng</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3: Liên hệ -->
+                <div class="flex flex-col items-start">
+                    <h3 class="text-lg font-bold mb-6 uppercase tracking-widest border-b-2 border-[#2f4f2f]/20 pb-1 text-nowrap">Liên hệ</h3>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-envelope mt-1 text-base"></i>
+                            <a href="mailto:support@freshmart.com" class="hover:text-white transition-colors break-all">support@freshmart.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone-alt text-base"></i>
+                            <span class="font-bold text-lg tracking-wider text-nowrap">1900 1234</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Cột 4: Kết nối -->
+                <div class="flex flex-col items-start">
+                    <h3 class="text-lg font-bold mb-6 uppercase tracking-widest border-b-2 border-[#2f4f2f]/20 pb-1 text-nowrap">Kết nối</h3>
+                    <div class="flex gap-4">
+                        <a href="#" class="bg-[#2f4f2f] text-[#88d696] w-11 h-11 rounded-full flex items-center justify-center hover:bg-white hover:text-[#2f4f2f] transition-all duration-300 shadow-md transform hover:-translate-y-1">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="bg-[#2f4f2f] text-[#88d696] w-11 h-11 rounded-full flex items-center justify-center hover:bg-white hover:text-[#2f4f2f] transition-all duration-300 shadow-md transform hover:-translate-y-1">
+                            <i class="fab fa-tiktok text-xl"></i>
+                        </a>
+                        <a href="#" class="bg-[#2f4f2f] text-[#88d696] w-11 h-11 rounded-full flex items-center justify-center hover:bg-white hover:text-[#2f4f2f] transition-all duration-300 shadow-md transform hover:-translate-y-1">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Dòng bản quyền -->
+        <div class="mt-16 pt-8 border-t border-[#2f4f2f]/10 text-center">
+            <p class="text-xs font-medium opacity-60 uppercase tracking-widest">
+                &copy; 2026 Fresh Mart Green Life. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
+
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 z-[100] pointer-events-none text-sm font-medium">
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initGlobalSearch();
+            initGuestRestrictions();
+        });
+
+        function initGlobalSearch() {
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = searchInput ? searchInput.parentElement.querySelector('button') : null;
+
+            if (!searchInput) return;
+
+            searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    executeSearch(searchInput.value);
+                }
+            });
+
+            if (searchBtn) {
+                searchBtn.addEventListener('click', () => {
+                    executeSearch(searchInput.value);
+                });
+            }
+        }
+
+        function executeSearch(keyword) {
+            window.location.href = 'san_pham.html?search=' + encodeURIComponent(keyword.trim());
+        }
+
+        function initGuestRestrictions() {
+            // 1. Chặn click Giỏ hàng trên Header
+            const cartIcon = document.getElementById('cart-icon');
+            if (cartIcon) {
+                cartIcon.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert("Vui lòng đăng nhập tài khoản để xem và sử dụng giỏ hàng của bạn!");
+                    window.location.href = "dang_nhap.html";
+                });
+            }
+
+            // 2. Chặn submit nhận bản tin khi chưa log in
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert("Bạn cần đăng nhập tài khoản để đăng ký nhận bản tin khuyến mãi!");
+                    window.location.href = "dang_nhap.html";
+                });
+            }
+
+            // 3. Đánh chặn toàn cục các thẻ đọc tiếp hoặc hành vi mua sắm giả định
+            document.body.addEventListener('click', (e) => {
+                const target = e.target;
+                
+                const isShoppingAction = (target.innerText && target.innerText.toLowerCase().includes('thêm vào giỏ')) ||
+                                         (target.innerText && target.innerText.toLowerCase().includes('mua ngay'));
+
+                if (isShoppingAction) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    alert("Vui lòng đăng nhập tài khoản để thực hiện mua sắm tại Fresh Mart!");
+                    window.location.href = "dang_nhap.html";
+                }
+            }, true);
+        }
+    </script>
+</body>
+</html>
