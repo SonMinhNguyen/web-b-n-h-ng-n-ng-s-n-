@@ -53,3 +53,12 @@ Trong quá trình phát triển và đảm bảo chất lượng hệ thống, c
 ## 5. Báo cáo Kiểm thử (Test Report)
 Phần này tổng hợp kết quả thực thi các kịch bản kiểm thử trên hệ thống. Báo cáo ghi nhận chi tiết tỷ lệ đạt/trượt (Pass/Fail) của các test case, danh sách các lỗi (bugs) phát hiện trong quá trình đánh giá, cũng như kết quả tổng quan của các luồng kiểm thử thủ công và tự động (Automation Test) trên nền tảng Web.
 * [Báo cáo kết quả kiểm thử hệ thống (Test Execution Report)](Template_TestReport.xlsx)
+### 🚀 Cập nhật giao diện UI/UX hệ thống
+
+Tôi đã hoàn thiện và cập nhật các màn hình chức năng mới nhất trên Figma. Các thành viên trong nhóm phát triển (Developer) và kiểm thử (Tester) có thể truy cập vào link bên dưới để tiến hành code giao diện cũng như xây dựng các kịch bản kiểm thử (test cases).
+
+* **Link Figma:** [Giao diện chi tiết các phân hệ](https://www.figma.com/design/AFueOSN8j0fxSNTwAC7A7g/Untitled?node-id=0-1&t=uHaI7RTYmt68pGpu-1)
+* **Các điểm cần lưu ý trong bản cập nhật này:**
+    * [ ] Kiểm tra kỹ hệ thống mã màu (Design Tokens) và khoảng cách (Spacing).
+    * [ ] Các trạng thái tương tác của nút bấm (Button States) và biểu mẫu (Form).
+    * [ ] Luồng chuyển động giữa các màn hình khi bấm vào các liên kết chính.
