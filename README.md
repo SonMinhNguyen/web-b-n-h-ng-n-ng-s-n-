@@ -47,3 +47,7 @@ Dưới đây là tập hợp các liên kết đến các sơ đồ thiết k�
 * [Đăng nhập](Diagram/SQ-SQ_ĐĂNG%20NHẬP.drawio.png)
 * [Đặt hàng](Diagram/SQ-SQ_Đặt%20Hàng.drawio.png)
 * [Đổi mật khẩu](Diagram/SQ-SQ_Đổi%20mật%20khẩu.drawio.png)
+* ## 4. Tài liệu Kiểm thử (Testing Documentation)
+Trong quá trình phát triển và đảm bảo chất lượng hệ thống, các kịch bản kiểm thử được xây dựng để đối chiếu với yêu cầu thiết kế. Bạn có thể tham khảo biểu mẫu thiết kế kiểm thử chi tiết tại đây:
+* [Mẫu thiết kế kịch bản kiểm thử (Test Design Template)](Template_TestDesign.xlsx)
+  
