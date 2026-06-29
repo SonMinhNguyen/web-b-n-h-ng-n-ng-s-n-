@@ -50,4 +50,6 @@ Dưới đây là tập hợp các liên kết đến các sơ đồ thiết k�
 * ## 4. Tài liệu Kiểm thử (Testing Documentation)
 Trong quá trình phát triển và đảm bảo chất lượng hệ thống, các kịch bản kiểm thử được xây dựng để đối chiếu với yêu cầu thiết kế. Bạn có thể tham khảo biểu mẫu thiết kế kiểm thử chi tiết tại đây:
 * [Mẫu thiết kế kịch bản kiểm thử (Test Design Template)](Template_TestDesign.xlsx)
-  
+## 5. Báo cáo Kiểm thử (Test Report)
+Phần này tổng hợp kết quả thực thi các kịch bản kiểm thử trên hệ thống. Báo cáo ghi nhận chi tiết tỷ lệ đạt/trượt (Pass/Fail) của các test case, danh sách các lỗi (bugs) phát hiện trong quá trình đánh giá, cũng như kết quả tổng quan của các luồng kiểm thử thủ công và tự động (Automation Test) trên nền tảng Web.
+* [Báo cáo kết quả kiểm thử hệ thống (Test Execution Report)](Template_TestReport.xlsx)
